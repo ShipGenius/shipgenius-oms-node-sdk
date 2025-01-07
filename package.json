@@ -1,12 +1,20 @@
 {
     "name": "@shipgenius/oms",
-    "version": "0.1.0",
-    "description": "SDK for Shipgenius Order Mangement System",
+    "version": "0.1.1",
+    "description": "NOT FINISHED, I'M JUST TESTING IT\n\nSDK for Shipgenius Order Mangement System",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
+    "exports": {
+        ".": "./dist/index.js",
+        "./client": "./dist/client/index.js"
+    },
+    "files": [
+        "dist/",
+        "!**/*.tsbuildinfo"
+    ],
     "scripts": {
         "test": "jest",
-        "build": "rm -r ./dist; tsc",
+        "build": "rm -rf ./dist; tsc",
         "format": "prettier --write \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
         "check-format": "prettier --check \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
         "lint": "eslint src/",

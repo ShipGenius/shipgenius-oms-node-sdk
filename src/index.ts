@@ -1,1 +1,2 @@
-export * as client from "@/client";
+import ShipGeniusOmsClient from "./client";
+export default ShipGeniusOmsClient;
