@@ -15,7 +15,10 @@
     },
     "author": "Shipgenius",
     "license": "SEE LICENSE IN LICENSE",
-    "repository": "https://github.com/ShipGenius/shipgenius-oms-node-sdk",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ShipGenius/shipgenius-oms-node-sdk.git"
+    },
     "devDependencies": {
         "@types/jest": "^29.5.14",
         "eslint": "^9.17.0",
