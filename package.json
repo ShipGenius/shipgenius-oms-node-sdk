@@ -1,5 +1,5 @@
 {
-    "name": "oms",
+    "name": "@shipgenius/oms",
     "version": "0.1.0",
     "description": "SDK for Shipgenius Order Mangement System",
     "main": "dist/index.js",
