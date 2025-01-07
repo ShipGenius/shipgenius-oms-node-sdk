@@ -1,12 +1,17 @@
 {
-  "name": "oms",
-  "version": "0.1.0",
-  "description": "SDK for Shipgenius Order Mangement System",
-  "main": "index.js",
-  "scripts": {
-    "test": "jest"
-  },
-  "author": "Shipgenius",
-  "license": "SEE LICENSE IN LICENSE",
-  "repository": "https://github.com/ShipGenius/shipgenius-oms-node-sdk"
+    "name": "oms",
+    "version": "0.1.0",
+    "description": "SDK for Shipgenius Order Mangement System",
+    "main": "dist/index.js",
+    "types": "dist/**/*.d.ts",
+    "scripts": {
+        "test": "jest",
+        "build": "rm -r ./dist; tsc"
+    },
+    "author": "Shipgenius",
+    "license": "SEE LICENSE IN LICENSE",
+    "repository": "https://github.com/ShipGenius/shipgenius-oms-node-sdk",
+    "devDependencies": {
+        "typescript": "^5.7.2"
+    }
 }
