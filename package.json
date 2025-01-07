@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "SDK for Shipgenius Order Mangement System",
     "main": "dist/index.js",
-    "types": "dist/**/*.d.ts",
+    "types": "dist/index.d.ts",
     "scripts": {
         "test": "jest",
         "build": "rm -r ./dist; tsc",

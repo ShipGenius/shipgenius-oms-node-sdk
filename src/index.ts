@@ -1,3 +1,1 @@
-export default function test() {
-    return "Hello, world!";
-}
+export * as client from "@/client";
