@@ -1,0 +1,12 @@
+{
+  "name": "oms",
+  "version": "0.1.0",
+  "description": "SDK for Shipgenius Order Mangement System",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Shipgenius",
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": "https://github.com/ShipGenius/shipgenius-oms-node-sdk"
+}
