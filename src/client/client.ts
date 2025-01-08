@@ -250,14 +250,35 @@ export default class ShipGeniusOmsClient {
         return new CarrierServiceList(data);
     }
 
-    /** Run an arbitrary GraphQL query */
+    /**
+     * Run an arbitrary GraphQL query
+     * 
+     * @param query - The GraphQL query (or mutation) to run
+     * @param variables - The variables to pass into the query
+     * @returns The `data` field of the query response
+     * 
+     * @throws {HttpError} if the response is not `ok`
+     * @throws {GraphqlError} if the response contains an `errors` key
+     */
     async runGraphql(query: string, variables?: JsonObject): Promise<JsonObject | null> {
         return (await this.makeGqlRequest({ query }, variables)) as JsonObject | null;
     }
 
+    /**
+     * Validate and correct address(es) against the USPS database
+     * 
+     * @param address - The address(es) to validate
+     * @param options {Object} - Additional options to control the response
+     * @param options.zip_plus_four - Whether to include ZIP+4 extensions on returned ZIP Codes as opposed to the plain 5-digit ZIP Code
+     * @returns A list of validated address and/or errors in the same order as the input
+     * 
+     * @throws {HttpError} if the response is not `ok`
+     * @throws {GraphqlError} if the response contains an `errors` key
+     */
     async validateAddress(
         address: GraphqlList<DomesticAddressInput>,
         options?: {
+            /** Whether to include ZIP+4 extensions on returned ZIP Codes as opposed to the plain 5-digit ZIP Code */
             zip_plus_four?: boolean;
         },
     ): Promise<(AddressValidationInfo | AddressValidationError)[]> {
