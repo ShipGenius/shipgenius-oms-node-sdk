@@ -1,3 +1,3 @@
-import ShipGeniusOmsClient from "./client";
+import ShipGeniusOmsClient from "./client.js";
 export default ShipGeniusOmsClient;
-export * from "./client-types";
+export * from "./client-types.js";

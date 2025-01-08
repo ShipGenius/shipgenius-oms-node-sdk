@@ -1,8 +1,11 @@
-import { ServerEnvironment } from "./client-types";
+/* This file is not exported in module */
 
+import { ServerEnvironment } from "./client-types.js";
+
+/** Resolve the server URL from the environment */
 export function getServerUrl(environment: ServerEnvironment): string {
     if (environment === "PRODUCTION") {
-        return "https://lite.shipgeni.us";
+        return "https://api.lite.shipgeni.us";
     } else if (environment === "SANDBOX") {
         throw new Error("Sandbox environment is not yet supported");
     } else if (environment === "DEVELOPMENT") {
@@ -13,3 +16,5 @@ export function getServerUrl(environment: ServerEnvironment): string {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     throw new Error(`Unknown environment: \`${environment}\``);
 }
+
+export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
