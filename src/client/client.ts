@@ -1,8 +1,13 @@
-import { JsonValue } from "../typescript-utils.js";
-import { HttpError, ServerConnectionSpecification, ShipGeniusOmsClientConstructorOptions } from "./client-types.js";
-import { getServerUrl, HttpMethod } from "./client-utils.js";
+import { GraphqlList, JsonObject, JsonValue } from "../typescript-utils.js";
+import { GraphqlError, HttpError, ServerConnectionSpecification, ShipGeniusOmsClientConstructorOptions } from "./client-types.js";
+import { getServerUrl } from "./client-utils.js";
 import CarrierList, { CarrierListData } from "../models/carrier-list.js";
 import CarrierServiceList, { CarrierServiceListData } from "../models/carrier-service-list.js";
+import { GraphqlResponse, HttpMethod } from "./private-types.js";
+import DomesticAddressInput from "../models/domestic-address-input.js";
+import { AddressValidationQueryResponse } from "../models/address-validation-response.js";
+import AddressValidationInfo from "../models/address-validation-info.js";
+import AddressValidationError from "../models/address-validation-error.js";
 
 /**
  * A client for connecting to the ShipGenius OMS API
@@ -86,8 +91,8 @@ export default class ShipGeniusOmsClient {
      * @param query The query parameters to add to the path
      * @returns The full url with path and query parameters
      */
-    private processUrl(path: string, query?: { [key: string]: string | string[] | null } | URLSearchParams) {
-        const full_path = `${this.url}/${this._version}${path}`;
+    private processUrl(path: string, no_version: boolean, query?: { [key: string]: string | string[] | null } | URLSearchParams) {
+        const full_path = no_version ? `${this.url}${path}` : `${this.url}/${this._version}${path}`;
 
         const [url_path, ...url_params] = full_path.split("?");
 
@@ -138,6 +143,7 @@ export default class ShipGeniusOmsClient {
      */
     private async makeRestRequest(args: {
         path: string;
+        no_version?: boolean;
         method: HttpMethod;
         body?: JsonValue;
         extra_headers?: { [key: string]: string };
@@ -145,7 +151,7 @@ export default class ShipGeniusOmsClient {
     }) {
         const { path, method, body, extra_headers, query } = args;
 
-        const fetch_url = this.processUrl(path, query);
+        const fetch_url = this.processUrl(path, args.no_version ?? false, query);
 
         const headers = {
             ...(body === undefined ? {} : { "Content-Type": "application/json" }),
@@ -165,6 +171,56 @@ export default class ShipGeniusOmsClient {
 
         return await response.json();
     }
+
+    /**
+     * Make a GraphQL request to the connected server,
+     * returning the JSON response
+     *
+     * @throws {HttpError} if the response is not `ok`
+     * @throws {GraphqlError} if the response contains an `errors` key
+     */
+    private async makeGqlRequest(
+        request:
+            | {
+                  document: string;
+                  query?: undefined;
+              }
+            | {
+                  document?: undefined;
+                  query: string;
+              },
+        variables?: JsonObject,
+    ): Promise<unknown> {
+        const response = (await this.makeRestRequest({
+            path: "/graphql",
+            method: "POST",
+            no_version: true,
+            body: {
+                documentId: request.document,
+                query: request.query,
+                variables,
+            },
+            extra_headers: {
+                Accept: "application/graphql-response+json",
+            },
+        })) as GraphqlResponse;
+
+        if (response.errors !== undefined) {
+            throw new GraphqlError(response.errors);
+        } else if (response.data !== undefined) {
+            return response.data;
+        } else {
+            throw new GraphqlError([
+                {
+                    message: "Server responded with an incomprehensible JSON response",
+                },
+            ]);
+        }
+    }
+
+    /// ^^^ PRIVATE HELPERS ABOVE ^^^ ///
+    /// ***************************** ///
+    /// vvv PUBLIC  METHODS BELOW vvv ///
 
     /**
      * Fetch a list of carriers supported by the API
@@ -192,5 +248,30 @@ export default class ShipGeniusOmsClient {
         })) as CarrierServiceListData;
 
         return new CarrierServiceList(data);
+    }
+
+    /** Run an arbitrary GraphQL query */
+    async runGraphql(query: string, variables?: JsonObject): Promise<JsonObject | null> {
+        return (await this.makeGqlRequest({ query }, variables)) as JsonObject | null;
+    }
+
+    async validateAddress(
+        address: GraphqlList<DomesticAddressInput>,
+        options?: {
+            zip_plus_four?: boolean;
+        },
+    ): Promise<(AddressValidationInfo | AddressValidationError)[]> {
+        const { address_validation } = (await this.makeGqlRequest(
+            { document: "ValidateAddress" },
+            { address, zip_plus_four: options?.zip_plus_four },
+        )) as AddressValidationQueryResponse;
+
+        return address_validation.map((address) => {
+            if (address.__typename === "AddressValidationInfo") {
+                return new AddressValidationInfo(address);
+            } else {
+                return new AddressValidationError(address);
+            }
+        });
     }
 }

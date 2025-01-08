@@ -16,5 +16,3 @@ export function getServerUrl(environment: ServerEnvironment): string {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     throw new Error(`Unknown environment: \`${environment}\``);
 }
-
-export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
