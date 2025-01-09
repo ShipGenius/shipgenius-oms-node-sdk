@@ -1,3 +1,5 @@
+/** @module @shipgenius/oms/models */
+
 export { default as AdditionalAddressInformation } from "./additional-address-information.js";
 export type { AdditionalAddressInformationInterface } from "./additional-address-information.js"
 export type { default as AddressInput } from "./address-input.js";
