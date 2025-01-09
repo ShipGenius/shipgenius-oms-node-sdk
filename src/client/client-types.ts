@@ -1,5 +1,5 @@
 import { JsonObject, JsonValue } from "../typescript-utils.js";
-import { GraphqlErrorResponse, ShipgeniusGraphqlErrorExtension } from "./private-types.js";
+import { GraphqlErrorResponse, ShipgeniusGraphqlErrorExtension } from "./gql-types.js";
 
 /**
  * The type of ShipGenius OMS API server connected to

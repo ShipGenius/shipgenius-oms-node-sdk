@@ -1,5 +1,5 @@
-/** Base information about an address */
-export interface AddressData {
+/** Interface version of {@link Address} */
+export interface AddressInterface {
     /** The street address */
     street: readonly string[];
     /** The city the address is in */
@@ -7,11 +7,11 @@ export interface AddressData {
 }
 
 /** An address returned by the API */
-export default class Address implements AddressData {
+export default class Address implements AddressInterface {
     public street: readonly string[];
     public city: string;
 
-    constructor(data: AddressData) {
+    constructor(data: AddressInterface) {
         this.street = data.street;
         this.city = data.city;
     }

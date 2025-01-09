@@ -21,7 +21,8 @@
         "check-format": "prettier --check \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
         "lint": "eslint src/",
         "coverage": "jest --coverage; open ./coverage/lcov-report/index.html",
-        "cicd-coverage-report": "jest --coverage --coverageReporters json-summary"
+        "cicd-coverage-report": "jest --coverage --coverageReporters json-summary",
+        "build-docs": "typedoc"
     },
     "author": "Shipgenius",
     "license": "SEE LICENSE IN LICENSE",
@@ -36,6 +37,7 @@
         "jest-junit": "^16.0.0",
         "prettier": "^3.4.2",
         "ts-jest": "^29.2.5",
+        "typedoc": "^0.27.6",
         "typescript": "^5.7.2",
         "typescript-eslint": "^8.19.1"
     }

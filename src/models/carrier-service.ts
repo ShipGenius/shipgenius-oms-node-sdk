@@ -1,4 +1,4 @@
-import Carrier, { CarrierData } from "./carrier.js";
+import Carrier, { CarrierInterface } from "./carrier.js";
 
 /** Where a service can ship from and to */
 export enum ShippingRegionType {
@@ -10,7 +10,8 @@ export enum ShippingRegionType {
     INTERNATIONAL_FROM_US = "INTERNATIONAL_FROM_US",
 }
 
-export interface CarrierServiceData {
+/** Interface version of {@link CarrierService} */
+export interface CarrierServiceInterface {
     /** The service's id the the Shipgenius OMS database */
     id: string;
     /** The user-facing name of the service */
@@ -29,16 +30,16 @@ export interface CarrierServiceData {
 }
 
 /** A supported shipping service */
-export default class CarrierService implements CarrierServiceData {
+export default class CarrierService implements CarrierServiceInterface {
     public id: string;
     public name: string;
     public code: string;
     public enabled_for_retail_user: boolean;
     public shipping_region_type: ShippingRegionType;
     public description: string | null;
-    public carrier: CarrierData | null;
+    public carrier: CarrierInterface | null;
 
-    constructor(data: CarrierServiceData) {
+    constructor(data: CarrierServiceInterface) {
         this.id = data.id;
         this.name = data.name;
         this.code = data.code;

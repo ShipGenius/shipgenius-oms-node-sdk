@@ -1,6 +1,7 @@
 import MessageSeverity from "./message-severity.js";
 
-export interface AddressValidationNoteData {
+/** Interface version of {@link AddressValidationNote} */
+export interface AddressValidationNoteInterface {
     /**
      * The severity of the note.
      *
@@ -14,11 +15,11 @@ export interface AddressValidationNoteData {
 }
 
 /** A note or warning about the address validation */
-export default class AddressValidationNote implements AddressValidationNoteData {
+export default class AddressValidationNote implements AddressValidationNoteInterface {
     public severity: MessageSeverity;
     public message: string;
 
-    constructor(data: AddressValidationNoteData) {
+    constructor(data: AddressValidationNoteInterface) {
         this.severity = data.severity;
         this.message = data.message;
     }

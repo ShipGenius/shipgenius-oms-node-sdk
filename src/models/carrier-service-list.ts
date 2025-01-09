@@ -1,8 +1,9 @@
-import CarrierService, { CarrierServiceData } from "./carrier-service.js";
+import CarrierService, { CarrierServiceInterface } from "./carrier-service.js";
 
-export interface CarrierServiceListData {
+/** Interface version of {@link CarrierServiceList} */
+export interface CarrierServiceListInterface {
     /** The list of carrier services returned */
-    services: readonly CarrierServiceData[];
+    services: readonly CarrierServiceInterface[];
 }
 
 /**
@@ -10,10 +11,10 @@ export interface CarrierServiceListData {
  *
  * This is a class in case extra metadata fields are added later
  */
-export default class CarrierServiceList implements CarrierServiceListData {
+export default class CarrierServiceList implements CarrierServiceListInterface {
     public services: readonly CarrierService[];
 
-    constructor({ services }: CarrierServiceListData) {
+    constructor({ services }: CarrierServiceListInterface) {
         this.services = services.map((service) => new CarrierService(service));
     }
 }

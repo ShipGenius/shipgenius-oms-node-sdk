@@ -1,7 +1,8 @@
-import Address, { AddressData } from "./address.js";
+import Address, { AddressInterface } from "./address.js";
 import StateCode from "./state-code.js";
 
-export interface DomesticAddressData extends AddressData {
+/** Interface version of {@link DomesticAddress} */
+export interface DomesticAddressInterface extends AddressInterface {
     /** The two-letter state code */
     state: StateCode;
     /**
@@ -19,12 +20,12 @@ export interface DomesticAddressData extends AddressData {
 }
 
 /** A domestic US address returned by the API */
-export default class DomesticAddress extends Address implements DomesticAddressData {
+export default class DomesticAddress extends Address implements DomesticAddressInterface {
     public state: StateCode;
     public zip_code: string;
     public urbanization_code: string | null;
 
-    constructor(data: DomesticAddressData) {
+    constructor(data: DomesticAddressInterface) {
         super(data);
 
         this.state = data.state;

@@ -1,9 +1,9 @@
 import { GraphqlList, JsonObject, JsonValue } from "../typescript-utils.js";
 import { GraphqlError, HttpError, ServerConnectionSpecification, ShipGeniusOmsClientConstructorOptions } from "./client-types.js";
 import { getServerUrl } from "./client-utils.js";
-import CarrierList, { CarrierListData } from "../models/carrier-list.js";
-import CarrierServiceList, { CarrierServiceListData } from "../models/carrier-service-list.js";
-import { GraphqlResponse, HttpMethod } from "./private-types.js";
+import CarrierList, { CarrierListInterface } from "../models/carrier-list.js";
+import CarrierServiceList, { CarrierServiceListInterface } from "../models/carrier-service-list.js";
+import { GraphqlResponse, HttpMethod } from "./gql-types.js";
 import DomesticAddressInput from "../models/domestic-address-input.js";
 import { AddressValidationQueryResponse } from "../models/address-validation-response.js";
 import AddressValidationInfo from "../models/address-validation-info.js";
@@ -139,7 +139,7 @@ export default class ShipGeniusOmsClient {
      * Make a RestAPI request to the connected server,
      * returning the JSON response
      *
-     * @throws {HttpError} if response is not `ok`
+     * @throws {@link client.HttpError} if response is not `ok`
      */
     private async makeRestRequest(args: {
         path: string;
@@ -176,8 +176,8 @@ export default class ShipGeniusOmsClient {
      * Make a GraphQL request to the connected server,
      * returning the JSON response
      *
-     * @throws {HttpError} if the response is not `ok`
-     * @throws {GraphqlError} if the response contains an `errors` key
+     * @throws {@link client.HttpError} if the response is not `ok`
+     * @throws {@link client.GraphqlError} if the response contains an `errors` key
      */
     private async makeGqlRequest(
         request:
@@ -225,13 +225,14 @@ export default class ShipGeniusOmsClient {
     /**
      * Fetch a list of carriers supported by the API
      *
-     * @throws {HttpError} if response is not `ok`
+     * @throws {@link client.HttpError}
+     * if response is not `ok`
      */
     async getSupportedCarriers(): Promise<CarrierList> {
         const data = (await this.makeRestRequest({
             path: "/carrier/list",
             method: "GET",
-        })) as CarrierListData;
+        })) as CarrierListInterface;
 
         return new CarrierList(data);
     }
@@ -239,13 +240,13 @@ export default class ShipGeniusOmsClient {
     /**
      * Fetch a list of carrier services supported by the API
      *
-     * @throws {HttpError} if response is not `ok`
+     * @throws {@link client.HttpError} if response is not `ok`
      */
     async getSupportedServices(): Promise<CarrierServiceList> {
         const data = (await this.makeRestRequest({
             path: "/carrier/service/list",
             method: "GET",
-        })) as CarrierServiceListData;
+        })) as CarrierServiceListInterface;
 
         return new CarrierServiceList(data);
     }
@@ -257,8 +258,8 @@ export default class ShipGeniusOmsClient {
      * @param variables - The variables to pass into the query
      * @returns The `data` field of the query response
      * 
-     * @throws {HttpError} if the response is not `ok`
-     * @throws {GraphqlError} if the response contains an `errors` key
+     * @throws {@link client.HttpError} if the response is not `ok`
+     * @throws {@link client.GraphqlError} if the response contains an `errors` key
      */
     async runGraphql(query: string, variables?: JsonObject): Promise<JsonObject | null> {
         return (await this.makeGqlRequest({ query }, variables)) as JsonObject | null;
@@ -268,12 +269,11 @@ export default class ShipGeniusOmsClient {
      * Validate and correct address(es) against the USPS database
      * 
      * @param address - The address(es) to validate
-     * @param options {Object} - Additional options to control the response
-     * @param options.zip_plus_four - Whether to include ZIP+4 extensions on returned ZIP Codes as opposed to the plain 5-digit ZIP Code
+     * @param options - Additional options to control the response
      * @returns A list of validated address and/or errors in the same order as the input
      * 
-     * @throws {HttpError} if the response is not `ok`
-     * @throws {GraphqlError} if the response contains an `errors` key
+     * @throws {@link client.HttpError} if the response is not `ok`
+     * @throws {@link client.GraphqlError} if the response contains an `errors` key
      */
     async validateAddress(
         address: GraphqlList<DomesticAddressInput>,

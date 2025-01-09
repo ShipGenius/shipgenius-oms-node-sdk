@@ -1,4 +1,6 @@
-export interface AdditionalAddressInformationData {
+
+/** Interface version of {@link AdditionalAddressInformation} */
+export interface AdditionalAddressInformationInterface {
     /** Whether USPS indicated that this is not a commercial address */
     residential: boolean;
     /** Whether USPS indicated that this address is occupied */
@@ -14,13 +16,13 @@ export interface AdditionalAddressInformationData {
 }
 
 /** Additional information about the address, mostly concerning its validity */
-export default class AdditionalAddressInformation implements AdditionalAddressInformationData {
+export default class AdditionalAddressInformation implements AdditionalAddressInformationInterface {
     public residential: boolean;
     public occupied: boolean;
     public known_address: boolean;
     public known_secondary_address: boolean;
 
-    constructor(data: AdditionalAddressInformationData) {
+    constructor(data: AdditionalAddressInformationInterface) {
         this.residential = data.residential;
         this.occupied = data.occupied;
         this.known_address = data.known_address;

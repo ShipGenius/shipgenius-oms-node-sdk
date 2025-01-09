@@ -1,1 +1,1 @@
-# shipgenius-oms-node-sdk
+# ShipGenius OMS Node SDK
