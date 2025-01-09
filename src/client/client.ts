@@ -84,7 +84,7 @@ export default class ShipGeniusOmsClient {
      *
      * @example
      * ```typescript
-     * import ShipGeniusOmsClient from "@shipgenius/oms";
+     * import ShipGeniusOmsClient, { ServerEnvironment } from "@shipgenius/oms/client";
      *
      * const client = new ShipGeniusOmsClient(
      *     "f7f4d30c26ac2537e1db50da3dbd990a0261617f857c093d3a261b6b2d27685e",
