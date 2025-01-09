@@ -12,6 +12,5 @@
     "readme": "doc-pages/index.md",
     "projectDocuments": ["doc-pages/index.md"],
     "includeVersion": true,
-    // uncomment to add our company colors
-    // "customCss": "doc-pages/theme.css",
+    "customCss": "doc-pages/theme.css",
 }
