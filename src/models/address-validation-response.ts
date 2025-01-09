@@ -1,8 +1,12 @@
-import { AddressValidationErrorInterface } from "./address-validation-error.js";
-import { AddressValidationInfoInterface } from "./address-validation-info.js";
-
-/** A possible response to an individual address validation */
-export type AddressValidationResponseInterface = AddressValidationInfoInterface | AddressValidationErrorInterface;
+/**
+ * Interface version of {@link AddressValidationResponse}
+ *
+ * @internal
+ */
+export interface AddressValidationResponseInterface {
+    /** Typename that can be used for type guards instead of `instanceof` */
+    __typename: "AddressValidationInfo" | "AddressValidationError";
+}
 
 /** The response to an address validation request */
 export interface AddressValidationQueryResponse {
@@ -10,9 +14,10 @@ export interface AddressValidationQueryResponse {
 }
 
 /** Base class for objects returned by address validation */
-export default class AddressValidationResponse {
+export default class AddressValidationResponse implements AddressValidationResponseInterface {
     public __typename: "AddressValidationInfo" | "AddressValidationError";
 
+    /** @hidden */
     constructor(typename: "AddressValidationInfo" | "AddressValidationError") {
         this.__typename = typename;
     }

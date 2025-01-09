@@ -1,6 +1,10 @@
 import CarrierService, { CarrierServiceInterface } from "./carrier-service.js";
 
-/** Interface version of {@link CarrierServiceList} */
+/**
+ * Interface version of {@link CarrierServiceList}
+ *
+ * @internal
+ */
 export interface CarrierServiceListInterface {
     /** The list of carrier services returned */
     services: readonly CarrierServiceInterface[];
@@ -14,6 +18,7 @@ export interface CarrierServiceListInterface {
 export default class CarrierServiceList implements CarrierServiceListInterface {
     public services: readonly CarrierService[];
 
+    /** @hidden */
     constructor({ services }: CarrierServiceListInterface) {
         this.services = services.map((service) => new CarrierService(service));
     }

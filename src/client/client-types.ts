@@ -3,54 +3,59 @@ import { GraphqlErrorResponse, ShipgeniusGraphqlErrorExtension } from "./gql-typ
 
 /**
  * The type of ShipGenius OMS API server connected to
- *
- * - PRODUCTION = Actual server to purchase real labels
- * - SANDBOX = Simple testing server with mock responses
- * - DEVELOPMENT = More complex testing environment with semi-persistent data, but still no real money or labels
  */
-export type ServerEnvironment = "PRODUCTION" | "SANDBOX" | "DEVELOPMENT";
+export enum ServerEnvironment {
+    /** Actual server to purchase real labels */
+    PRODUCTION = "PRODUCTION",
+    /** Simple testing server with mock responses */
+    SANDBOX = "SANDBOX",
+    /** More complex testing environment with semi-persistent data, but still no real money or labels */
+    DEVELOPMENT = "DEVELOPMENT",
+}
+
+/**
+ * Specification of the server to connect to using server's environment
+ *
+ * @see {@link ServerConnectionSpecification}
+ */
+export interface ServerEnvironmentConnection {
+    /**
+     * The standard Shipgenius-run server
+     */
+    environment: ServerEnvironment;
+    /** @hidden */
+    url?: undefined | null;
+}
+
+/**
+ * Specification of the server to connect to using the server's url
+ *
+ * @see {@link ServerConnectionSpecification}
+ */
+export interface ServerUrlConnection {
+    /**
+     * A custom url pointing to the Shipgenius OMS server
+     *
+     * Useful if you need to connect indirectly or to a development server
+     */
+    url: string;
+    /** @hidden */
+    environment?: undefined | null;
+}
 
 /**
  * The server to connect to
  *
  * Can be specified either using `environment` (recommended) or `url` (not recommended)
  */
-export type ServerConnectionSpecification =
-    | {
-          /**
-           * The standard Shipgenius-run server
-           *
-           * - PRODUCTION = Actual server to purchase real labels
-           * - SANDBOX = Simple testing server with mock responses
-           * - DEVELOPMENT = More complex testing environment with semi-persistent data, but still no real money or labels
-           */
-          environment: ServerEnvironment;
-          /**
-           * A custom url pointing to the Shipgenius OMS server
-           *
-           * Useful if you need to connect indirectly or to a development server
-           */
-          url?: undefined | null;
-      }
-    | {
-          /**
-           * A custom url pointing to the Shipgenius OMS server
-           *
-           * Useful if you need to connect indirectly or to a development server
-           */
-          url: string;
-          /**
-           * The standard Shipgenius-run server
-           *
-           * - PRODUCTION = Actual server to purchase real labels
-           * - SANDBOX = Simple testing server with mock responses
-           * - DEVELOPMENT = More complex testing environment with semi-persistent data, but still no real money or labels
-           */
-          environment?: undefined | null;
-      };
+export type ServerConnectionSpecification = ServerEnvironmentConnection | ServerUrlConnection;
 
 /**
- * Additional settings for the connection
+ * Additional options for the connection, such as the api version.
+ * 
+ * None of these arguments are required.
+ *
+ * @expand
  */
 export interface ShipGeniusOmsClientConstructorOptions {
     /**
@@ -72,6 +77,7 @@ export class HttpError extends Error {
     private _parsed_json: JsonValue | undefined = undefined;
     private _parsed_text: string | undefined = undefined;
 
+    /** @hidden */
     constructor(response: StrippedResponse) {
         super("HTTP Error: " + response.status);
 
@@ -169,6 +175,7 @@ export class GraphqlError extends Error {
         return this._errors.map((err) => err.extensions).filter(isShipgeniusErrorExtension);
     }
 
+    /** @hidden */
     constructor(errors: [GraphqlErrorResponse, ...GraphqlErrorResponse[]]) {
         super(errors[0].message);
 

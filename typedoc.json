@@ -1,0 +1,12 @@
+{
+    "entryPoints": [
+        "./src/index.ts",
+        "./src/client/index.ts",
+        "./src/models/index.ts"
+    ],
+    "useFirstParagraphOfCommentAsSummary": true,
+    "plugin": [
+        "typedoc-plugin-rename-defaults",
+        "typedoc-plugin-mdn-links"
+    ]
+}

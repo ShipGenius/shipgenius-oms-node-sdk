@@ -6,8 +6,8 @@ import CarrierServiceList, { CarrierServiceListInterface } from "../models/carri
 import { GraphqlResponse, HttpMethod } from "./gql-types.js";
 import DomesticAddressInput from "../models/domestic-address-input.js";
 import { AddressValidationQueryResponse } from "../models/address-validation-response.js";
-import AddressValidationInfo from "../models/address-validation-info.js";
-import AddressValidationError from "../models/address-validation-error.js";
+import AddressValidationInfo, { AddressValidationInfoInterface } from "../models/address-validation-info.js";
+import AddressValidationError, { AddressValidationErrorInterface } from "../models/address-validation-error.js";
 
 /**
  * A client for connecting to the ShipGenius OMS API
@@ -38,49 +38,61 @@ export default class ShipGeniusOmsClient {
         return this._version;
     }
 
-    constructor(
-        /**
-         * The API Key used to authenticate with the ShipGenius OMS server.
-         *
-         * You can create one through the [Connected Apps portal](https://lite.shipgeni.us/connected-apps)
-         */
-        api_key: string,
-        /**
-         * The server to connect to.
-         *
-         * **Connecting via `environment` (recommended)**
-         *
-         * Specify the `environment` key to connect to a standard ShipGenius server
-         *
-         * Options are:
-         * - PRODUCTION = Actual server to purchase real labels
-         * - SANDBOX = Simple testing server with mock responses
-         * - DEVELOPMENT = More complex testing environment with semi-persistent data, but still no real money or labels
-         *
-         * Example:
-         * ```typescript
-         * { environment: "SANDBOX" }
-         * ```
-         *
-         * **Connecting via `url` (not recommended)**
-         *
-         * A custom url pointing to the Shipgenius OMS server.
-         *
-         * Useful if you need to connect indirectly, or to a staging server.
-         *
-         * Example:
-         * ```typescript
-         * { url: "https://localhost" }
-         * ```
-         */
-        server: ServerConnectionSpecification,
-        /**
-         * Additional options for the connection, such as the api version.
-         *
-         * None of these arguments are required.
-         */
-        options?: ShipGeniusOmsClientConstructorOptions,
-    ) {
+    /**
+     *
+     * @param api_key
+     * The API Key used to authenticate with the ShipGenius OMS server.
+     *
+     * You can create one through the [Connected Apps portal](https://lite.shipgeni.us/connected-apps).
+     * @param server
+     * The server to connect to.
+     *
+     * ##### **Connecting via `environment` (recommended)**
+     *
+     * Specify the {@link client.ServerEnvironmentConnection.environment | `environment`} key with a {@link client.ServerEnvironment | ServerEnvironment} value to connect to a standard ShipGenius server
+     *
+     * Options are:
+     * - {@link client.ServerEnvironment.PRODUCTION | `PRODUCTION`} = Actual server to purchase real labels
+     * - {@link client.ServerEnvironment.SANDBOX | `SANDBOX`} = Simple testing server with mock responses
+     * - {@link client.ServerEnvironment.DEVELOPMENT | `DEVELOPMENT`} = More complex testing environment with semi-persistent data, but still no real money or labels
+     *
+     * Example
+     * ```typescript
+     * { environment: ServerEnvironment.SANDBOX }
+     * ```
+     *
+     * ##### **Connecting via `url` (not recommended)**
+     *
+     * Specify the {@link client.ServerUrlConnection.url | `url`} key with a URL
+     * to connect to a server at a custom URL.
+     *
+     * Useful if you need to connect indirectly, or to a staging server.
+     *
+     * URL should _not_ contain a trailing slash or version number.
+     *
+     * URL should contain a protocol (i.e. `http://` or `https://`).
+     *
+     * Example
+     * ```typescript
+     * { url: "http://localhost:8000" }
+     * ```
+     *
+     * @param options
+     * 
+     * Optional extra options
+     * 
+     * @example
+     * ```typescript
+     * import ShipGeniusOmsClient from "@shipgenius/oms";
+     * 
+     * const client = new ShipGeniusOmsClient(
+     *     "f7f4d30c26ac2537e1db50da3dbd990a0261617f857c093d3a261b6b2d27685e",
+     *     { environment: ServerEnvironment.SANDBOX },
+     *     { version: "latest" }, // not necessary since "latest" is the default
+     * );
+     * ```
+     */
+    constructor(api_key: string, server: ServerConnectionSpecification, options?: ShipGeniusOmsClientConstructorOptions) {
         this.api_key = api_key;
         this._url = server.url ?? getServerUrl(server.environment);
         this._version = options?.version ?? "latest";
@@ -252,12 +264,12 @@ export default class ShipGeniusOmsClient {
     }
 
     /**
-     * Run an arbitrary GraphQL query
-     * 
+     * Run an arbitrary GraphQL query on the connected API server.
+     *
      * @param query - The GraphQL query (or mutation) to run
      * @param variables - The variables to pass into the query
      * @returns The `data` field of the query response
-     * 
+     *
      * @throws {@link client.HttpError} if the response is not `ok`
      * @throws {@link client.GraphqlError} if the response contains an `errors` key
      */
@@ -267,11 +279,11 @@ export default class ShipGeniusOmsClient {
 
     /**
      * Validate and correct address(es) against the USPS database
-     * 
+     *
      * @param address - The address(es) to validate
      * @param options - Additional options to control the response
      * @returns A list of validated address and/or errors in the same order as the input
-     * 
+     *
      * @throws {@link client.HttpError} if the response is not `ok`
      * @throws {@link client.GraphqlError} if the response contains an `errors` key
      */
@@ -289,9 +301,9 @@ export default class ShipGeniusOmsClient {
 
         return address_validation.map((address) => {
             if (address.__typename === "AddressValidationInfo") {
-                return new AddressValidationInfo(address);
+                return new AddressValidationInfo(address as AddressValidationInfoInterface);
             } else {
-                return new AddressValidationError(address);
+                return new AddressValidationError(address as AddressValidationErrorInterface);
             }
         });
     }

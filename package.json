@@ -22,7 +22,8 @@
         "lint": "eslint src/",
         "coverage": "jest --coverage; open ./coverage/lcov-report/index.html",
         "cicd-coverage-report": "jest --coverage --coverageReporters json-summary",
-        "build-docs": "typedoc --plugin typedoc-plugin-rename-defaults"
+        "build-docs": "typedoc",
+        "watch-docs": "typedoc --watch"
     },
     "author": "Shipgenius",
     "license": "SEE LICENSE IN LICENSE",
@@ -38,6 +39,7 @@
         "prettier": "^3.4.2",
         "ts-jest": "^29.2.5",
         "typedoc": "^0.27.6",
+        "typedoc-plugin-mdn-links": "^4.0.7",
         "typedoc-plugin-rename-defaults": "^0.7.2",
         "typescript": "^5.7.2",
         "typescript-eslint": "^8.19.1"

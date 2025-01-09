@@ -1,7 +1,15 @@
-/** @module @shipgenius/oms/models */
+/**
+ * Interfaces and classes describing the input and output types for the API
+ *
+ * All output types are described by a class, while input types are an interface.
+ *
+ * Output types are also given interfaces, but these are meant mostly for internal use.
+ *
+ * @module @shipgenius/oms/models
+ */
 
 export { default as AdditionalAddressInformation } from "./additional-address-information.js";
-export type { AdditionalAddressInformationInterface } from "./additional-address-information.js"
+export type { AdditionalAddressInformationInterface } from "./additional-address-information.js";
 export type { default as AddressInput } from "./address-input.js";
 export { default as AddressValidationError } from "./address-validation-error.js";
 export type { AddressValidationErrorInterface } from "./address-validation-error.js";

@@ -7,7 +7,11 @@ export enum CarrierName {
     FedEx = "FedEx",
 }
 
-/** Interface version of {@link Carrier} */
+/**
+ * Interface version of {@link Carrier}
+ *
+ * @internal
+ */
 export interface CarrierInterface {
     /** The carrier's id in the Shipgenius OMS database */
     id: string;
@@ -23,6 +27,7 @@ export default class Carrier implements CarrierInterface {
     public name: CarrierName;
     public description: string | null;
 
+    /** @hidden */
     constructor(data: CarrierInterface) {
         this.id = data.id;
         this.name = data.name;

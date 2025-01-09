@@ -1,8 +1,13 @@
 import { JsonObject } from "../typescript-utils.js";
 
+/** An HTTP request method */
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
-/** An error returned by GraphQL */
+/**
+ * An error returned by GraphQL
+ * 
+ * @see {@link https://spec.graphql.org/October2021/#sec-Errors.Error-result-format | GraphQL Spec}
+ */
 export interface GraphqlErrorResponse {
     /** The error message */
     message: string;
@@ -15,19 +20,30 @@ export interface GraphqlErrorResponse {
     path?: (string | number)[];
     /**
      * Extra information about the error.
-     * 
+     *
      * Will likely be {@link ShipgeniusGraphqlErrorExtension}
      */
     extensions?: JsonObject;
 }
 
-/** Extra information about the error */
+/**
+ * Extra information about the error
+ * 
+ * Responses from the Shipgenius OMS GraphQL server will usually implement this interface in {@link GraphqlErrorResponse.extensions}
+ */
 export interface ShipgeniusGraphqlErrorExtension extends JsonObject {
     /** An equivalent HTTP status */
     http_status: number;
     /** Further free-form details about the error */
     additional_details: JsonObject;
-    /** An error code identifying the type of error */
+    /**
+     * An error code identifying the type of error
+     * 
+     * @remarks
+     * 
+     * There is not currently an enum of these values,
+     * but there will be in the future
+     */
     code: string;
 }
 

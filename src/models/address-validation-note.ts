@@ -1,13 +1,17 @@
 import MessageSeverity from "./message-severity.js";
 
-/** Interface version of {@link AddressValidationNote} */
+/**
+ * Interface version of {@link AddressValidationNote}
+ *
+ * @internal
+ */
 export interface AddressValidationNoteInterface {
     /**
      * The severity of the note.
      *
-     * - `CRITICAL` = The address is likely invalid.
-     * - `WARNING` = The address was corrected.
-     * - `NOTE` = Information was added to the address
+     * - {@link MessageSeverity.CRITICAL | `CRITICAL`} = The address is likely invalid.
+     * - {@link MessageSeverity.WARNING | `WARNING`} = The address was corrected.
+     * - {@link MessageSeverity.NOTE | `NOTE`} = Information was added to the address
      */
     severity: MessageSeverity;
     /** A human-readable explanation of the correction */
@@ -19,6 +23,7 @@ export default class AddressValidationNote implements AddressValidationNoteInter
     public severity: MessageSeverity;
     public message: string;
 
+    /** @hidden */
     constructor(data: AddressValidationNoteInterface) {
         this.severity = data.severity;
         this.message = data.message;

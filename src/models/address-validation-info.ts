@@ -1,11 +1,14 @@
 import AdditionalAddressInformation, { AdditionalAddressInformationInterface } from "./additional-address-information.js";
 import AddressValidationNote, { AddressValidationNoteInterface } from "./address-validation-note.js";
-import AddressValidationResponse from "./address-validation-response.js";
+import AddressValidationResponse, { AddressValidationResponseInterface } from "./address-validation-response.js";
 import DomesticAddress, { DomesticAddressInterface } from "./domestic-address.js";
 
-/** Interface version of {@link AddressValidationInfo} */
-export interface AddressValidationInfoInterface {
-    /** Typename that can be used for type guards instead of `instanceof` */
+/**
+ * Interface version of {@link AddressValidationInfo}
+ *
+ * @internal
+ */
+export interface AddressValidationInfoInterface extends AddressValidationResponseInterface {
     __typename: "AddressValidationInfo";
     /** A list of warnings and corrections to the address, sorted from most critical to least critical */
     warnings: readonly AddressValidationNoteInterface[];
@@ -25,6 +28,7 @@ export default class AddressValidationInfo extends AddressValidationResponse imp
     public original_address: DomesticAddress;
     public additional: AdditionalAddressInformation;
 
+    /** @hidden */
     constructor(data: AddressValidationInfoInterface) {
         super(data.__typename);
 

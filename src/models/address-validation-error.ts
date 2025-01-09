@@ -1,9 +1,12 @@
-import AddressValidationResponse from "./address-validation-response.js";
+import AddressValidationResponse, { AddressValidationResponseInterface } from "./address-validation-response.js";
 import CarrierErrorCode from "./carrier-error-code.js";
 
-/** Interface version of {@link AddressValidationError} */
-export interface AddressValidationErrorInterface {
-    /** Typename that can be used for type guards instead of `instanceof` */
+/**
+ * Interface version of {@link AddressValidationError}
+ *
+ * @internal
+ */
+export interface AddressValidationErrorInterface extends AddressValidationResponseInterface {
     __typename: "AddressValidationError";
     /** The error code for the error */
     error_code: CarrierErrorCode;
@@ -17,6 +20,7 @@ export default class AddressValidationError extends AddressValidationResponse im
     public error_code: CarrierErrorCode;
     public error_message: string | null;
 
+    /** @hidden */
     constructor(data: AddressValidationErrorInterface) {
         super(data.__typename);
 

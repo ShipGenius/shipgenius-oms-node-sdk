@@ -1,5 +1,8 @@
-
-/** Interface version of {@link AdditionalAddressInformation} */
+/**
+ * Interface version of {@link AdditionalAddressInformation}
+ *
+ * @internal
+ */
 export interface AdditionalAddressInformationInterface {
     /** Whether USPS indicated that this is not a commercial address */
     residential: boolean;
@@ -22,6 +25,7 @@ export default class AdditionalAddressInformation implements AdditionalAddressIn
     public known_address: boolean;
     public known_secondary_address: boolean;
 
+    /** @hidden */
     constructor(data: AdditionalAddressInformationInterface) {
         this.residential = data.residential;
         this.occupied = data.occupied;
