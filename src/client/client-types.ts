@@ -52,7 +52,7 @@ export type ServerConnectionSpecification = ServerEnvironmentConnection | Server
 
 /**
  * Additional options for the connection, such as the api version.
- * 
+ *
  * None of these arguments are required.
  *
  * @expand

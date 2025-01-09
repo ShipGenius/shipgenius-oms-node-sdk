@@ -8,5 +8,7 @@
     "plugin": [
         "typedoc-plugin-rename-defaults",
         "typedoc-plugin-mdn-links"
-    ]
+    ],
+    "readme": "doc-pages/index.md",
+    "projectDocuments": ["doc-pages/index.md"]
 }

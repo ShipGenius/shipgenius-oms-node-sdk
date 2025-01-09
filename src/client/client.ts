@@ -68,9 +68,10 @@ export default class ShipGeniusOmsClient {
      *
      * Useful if you need to connect indirectly, or to a staging server.
      *
-     * URL should _not_ contain a trailing slash or version number.
-     *
-     * URL should contain a protocol (i.e. `http://` or `https://`).
+     * > [!NOTE]
+     * > URL should _not_ contain a trailing slash or version number.
+     * >
+     * > URL should contain a protocol (i.e. `http://` or `https://`).
      *
      * Example
      * ```typescript
@@ -78,13 +79,13 @@ export default class ShipGeniusOmsClient {
      * ```
      *
      * @param options
-     * 
+     *
      * Optional extra options
-     * 
+     *
      * @example
      * ```typescript
      * import ShipGeniusOmsClient from "@shipgenius/oms";
-     * 
+     *
      * const client = new ShipGeniusOmsClient(
      *     "f7f4d30c26ac2537e1db50da3dbd990a0261617f857c093d3a261b6b2d27685e",
      *     { environment: ServerEnvironment.SANDBOX },

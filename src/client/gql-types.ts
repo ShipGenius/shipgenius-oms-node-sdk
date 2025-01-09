@@ -5,7 +5,7 @@ export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 /**
  * An error returned by GraphQL
- * 
+ *
  * @see {@link https://spec.graphql.org/October2021/#sec-Errors.Error-result-format | GraphQL Spec}
  */
 export interface GraphqlErrorResponse {
@@ -28,7 +28,7 @@ export interface GraphqlErrorResponse {
 
 /**
  * Extra information about the error
- * 
+ *
  * Responses from the Shipgenius OMS GraphQL server will usually implement this interface in {@link GraphqlErrorResponse.extensions}
  */
 export interface ShipgeniusGraphqlErrorExtension extends JsonObject {
@@ -38,9 +38,9 @@ export interface ShipgeniusGraphqlErrorExtension extends JsonObject {
     additional_details: JsonObject;
     /**
      * An error code identifying the type of error
-     * 
+     *
      * @remarks
-     * 
+     *
      * There is not currently an enum of these values,
      * but there will be in the future
      */
