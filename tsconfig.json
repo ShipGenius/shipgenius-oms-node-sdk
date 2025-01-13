@@ -5,8 +5,8 @@
         "skipLibCheck": true,
         "strict": true,
         "esModuleInterop": true,
-        "module": "nodenext",
-        "moduleResolution": "nodenext",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
         "resolveJsonModule": true,
         "isolatedModules": true,
         "jsx": "preserve",
@@ -14,5 +14,6 @@
         "declaration": true,
         "outDir": "dist",
     },
-    "include": ["src/**/*.ts"]
+    "include": ["src/**/*.ts"],
+    "exclude": ["**/*.test.*"],
 }

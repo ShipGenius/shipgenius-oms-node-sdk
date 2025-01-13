@@ -8,14 +8,17 @@ export default [
     {
         files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
     },
-    // {
-    //     ignores: ["**/*.test.*"],
-    // },
+    {
+        ignores: ["**/*.test.*"],
+    },
     {
         languageOptions: {
             parserOptions: {
-                projectService: true,
+                projectService: {
+                    allowDefaultProject: ["*.js", "*.mjs", "*.cjs", "*.cts"]
+                },
                 tsconfigRootDir: import.meta.dirname,
+                
             }
         }
     },
