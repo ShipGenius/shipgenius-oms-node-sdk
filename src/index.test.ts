@@ -1,5 +1,4 @@
-
-import ShipGeniusOmsClient, { client, models, type_helpers } from "./index"
+import ShipGeniusOmsClient, { client, models, type_helpers } from "./index";
 
 describe("@shipgenius/oms", () => {
     it("has the expected exports", () => {
@@ -7,5 +6,5 @@ describe("@shipgenius/oms", () => {
         expect(client).toBeDefined();
         expect(models).toBeDefined();
         expect(type_helpers).toBeDefined();
-    })
+    });
 });
