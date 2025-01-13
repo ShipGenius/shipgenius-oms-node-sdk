@@ -13,4 +13,22 @@
     "projectDocuments": ["doc-pages/index.md"],
     "includeVersion": true,
     "customCss": "doc-pages/theme.css",
+    "requiredToBeDocumented": [
+        "Module",
+        "Namespace",
+        "Enum",
+        "EnumMember",
+        "Variable",
+        "Function",
+        "Class",
+        "Interface",
+        "Property",
+        "Method",
+        "Parameter",
+        "Accessor",
+        "TypeAlias"
+    ],
+    "validation": {
+        "notDocumented": true,
+    }
 }

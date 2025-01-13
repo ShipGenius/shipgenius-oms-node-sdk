@@ -13,7 +13,9 @@ export interface GraphqlErrorResponse {
     message: string;
     /** Where the error occurred */
     locations?: {
+        /** The line in the GraphQL document the error occurred */
         line: number;
+        /** The column in the GraphQL document the error occurred */
         column: number;
     }[];
     /** The path of keys to where the error occurred */

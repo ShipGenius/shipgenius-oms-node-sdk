@@ -8,6 +8,10 @@ import DomesticAddressInput from "../models/domestic-address-input.js";
 import { AddressValidationQueryResponse } from "../models/address-validation-response.js";
 import AddressValidationInfo, { AddressValidationInfoInterface } from "../models/address-validation-info.js";
 import AddressValidationError, { AddressValidationErrorInterface } from "../models/address-validation-error.js";
+import BulkDomesticRateResponse, { DomesticRateQueryResponse } from "../models/bulk-domestic-rate-response.js";
+import WeightUnit from "../models/weight-unit.js";
+import CarrierServiceRateInput from "../models/carrier-service-rate-input.js";
+import DomesticRateInput from "../models/domestic-rate-input.js";
 
 /**
  * A client for connecting to the ShipGenius OMS API
@@ -17,6 +21,11 @@ export default class ShipGeniusOmsClient {
     /** The user's App API Token */
     protected api_key: string;
 
+    /**
+     * The base URL requests are being sent to
+     *
+     * @internal
+     */
     protected _url: string;
     /**
      * The base URL requests are being sent to
@@ -241,7 +250,7 @@ export default class ShipGeniusOmsClient {
      * @throws {@link client.HttpError}
      * if response is not `ok`
      */
-    async getSupportedCarriers(): Promise<CarrierList> {
+    public async getSupportedCarriers(): Promise<CarrierList> {
         const data = (await this.makeRestRequest({
             path: "/carrier/list",
             method: "GET",
@@ -255,7 +264,7 @@ export default class ShipGeniusOmsClient {
      *
      * @throws {@link client.HttpError} if response is not `ok`
      */
-    async getSupportedServices(): Promise<CarrierServiceList> {
+    public async getSupportedServices(): Promise<CarrierServiceList> {
         const data = (await this.makeRestRequest({
             path: "/carrier/service/list",
             method: "GET",
@@ -274,7 +283,7 @@ export default class ShipGeniusOmsClient {
      * @throws {@link client.HttpError} if the response is not `ok`
      * @throws {@link client.GraphqlError} if the response contains an `errors` key
      */
-    async runGraphql(query: string, variables?: JsonObject): Promise<JsonObject | null> {
+    public async runGraphql(query: string, variables?: JsonObject): Promise<JsonObject | null> {
         return (await this.makeGqlRequest({ query }, variables)) as JsonObject | null;
     }
 
@@ -288,10 +297,14 @@ export default class ShipGeniusOmsClient {
      * @throws {@link client.HttpError} if the response is not `ok`
      * @throws {@link client.GraphqlError} if the response contains an `errors` key
      */
-    async validateAddress(
+    public async validateAddress(
         address: GraphqlList<DomesticAddressInput>,
         options?: {
-            /** Whether to include ZIP+4 extensions on returned ZIP Codes as opposed to the plain 5-digit ZIP Code */
+            /**
+             * Whether to include ZIP+4 extensions on returned ZIP Codes as opposed to the plain 5-digit ZIP Code
+             *
+             * @default false
+             */
             zip_plus_four?: boolean;
         },
     ): Promise<(AddressValidationInfo | AddressValidationError)[]> {
@@ -307,5 +320,54 @@ export default class ShipGeniusOmsClient {
                 return new AddressValidationError(address as AddressValidationErrorInterface);
             }
         });
+    }
+
+    /**
+     * Get cost and transit estimates for a domestic (USA to USA) shipment
+     *
+     * @param request - The package(s) to rate
+     * @param services - The carrier service(s) to get rates for
+     * @param options - Additional options for the request
+     *
+     * @returns A list of rate information for each package, in the order they were input
+     *
+     * > [!NOTE]
+     * >
+     * > The return is a list of rated **packages**, each of which has a `rates` list containing the actual rates
+     *
+     * @throws {@link client.HttpError} if the response is not `ok`
+     * @throws {@link client.GraphqlError} if the response contains an `errors` key
+     */
+    public async getDomesticRate(
+        request: GraphqlList<DomesticRateInput>,
+        services: GraphqlList<CarrierServiceRateInput>,
+        options?: {
+            /**
+             * If set to `true`, the returned rates will have have the {@link "@shipgenius/oms/models".DomesticRate.rate_id | `rate_id`} set.
+             *
+             * You can use this returned id to purchase a label at the rated price for the rated service
+             *
+             * @default true
+             */
+            save_rates?: boolean;
+            /**
+             * The unit to return weights in
+             *
+             * @default - {@link WeightUnit.LBS}
+             */
+            weight_unit: WeightUnit;
+        },
+    ) {
+        const { domestic_rate } = (await this.makeGqlRequest(
+            { document: "DomesticRate" },
+            {
+                request,
+                services,
+                save_rates: options?.save_rates,
+                weight_unit: options?.weight_unit,
+            },
+        )) as DomesticRateQueryResponse;
+
+        return domestic_rate.map((shipment) => new BulkDomesticRateResponse(shipment));
     }
 }

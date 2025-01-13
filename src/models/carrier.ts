@@ -1,8 +1,12 @@
 /** The name of a carrier, used when requesting rates */
 export enum CarrierName {
+    /** UPS */
     UPS = "UPS",
+    /** USPS */
     USPS = "USPS",
+    /** DHL */
     DHL = "DHL",
+    /** FedEx */
     // eslint-disable-next-line @typescript-eslint/naming-convention
     FedEx = "FedEx",
 }

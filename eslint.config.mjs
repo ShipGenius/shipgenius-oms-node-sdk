@@ -61,6 +61,21 @@ export default [
             "@typescript-eslint/prefer-for-of": "warn",
             "@typescript-eslint/prefer-includes": "warn",
             "@typescript-eslint/require-array-sort-compare": "error",
+            "@typescript-eslint/explicit-member-accessibility": [
+                "warn",
+                {
+                    accessibility: "explicit",
+                    overrides: {
+                        constructors: "no-public"
+                    }
+                }
+            ],
+            "@typescript-eslint/no-empty-object-type": [
+                "error",
+                {
+                    allowInterfaces: "with-single-extends",
+                }
+            ],
             "@typescript-eslint/naming-convention": [
                 "warn",
                 {
@@ -130,8 +145,6 @@ export default [
                   },
 
             ],
-            "react/react-in-jsx-scope": "off",
-            "react/jsx-uses-react": "off",
         }
     }
 ];

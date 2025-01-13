@@ -67,9 +67,7 @@ export interface ShipGeniusOmsClientConstructorOptions {
 }
 
 /** Standard fetch Response object with some fields removed  */
-export type StrippedResponse = Omit<Response, "body" | "bodyUsed" | "arrayBuffer" | "blob" | "formData" | "bytes" | "clone"> & {
-    clone: () => StrippedResponse;
-};
+export type StrippedResponse = Omit<Response, "body" | "bodyUsed" | "arrayBuffer" | "blob" | "formData" | "bytes">;
 
 /** An error occuring from a non-ok HTTP response */
 export class HttpError extends Error {
@@ -88,7 +86,7 @@ export class HttpError extends Error {
      * The Response object, but with some fields missing to facilitate re-use
      * of the .json() and .text() methods
      */
-    get response(): StrippedResponse {
+    public get response(): StrippedResponse {
         return {
             headers: this._response.headers,
             type: this._response.type,
@@ -120,7 +118,7 @@ export class HttpError extends Error {
     }
 
     /** Get the error message from the response */
-    async getMessage() {
+    public async getMessage() {
         const error_data = (await this.response.json()) as JsonValue;
 
         if (typeof error_data === "object" && error_data !== null && "detail" in error_data && typeof error_data.detail === "string") {
@@ -147,7 +145,7 @@ export class HttpError extends Error {
 export class GraphqlError extends Error {
     private _errors: readonly [GraphqlErrorResponse, ...GraphqlErrorResponse[]];
     /** The `errors` key from GraphQL response */
-    get errors(): readonly [GraphqlErrorResponse, ...GraphqlErrorResponse[]] {
+    public get errors(): readonly [GraphqlErrorResponse, ...GraphqlErrorResponse[]] {
         return this._errors;
     }
 
@@ -157,7 +155,7 @@ export class GraphqlError extends Error {
      * The list is filtered down to just those with full extension details,
      * which *should* be all of them.
      */
-    get error_extensions(): ShipgeniusGraphqlErrorExtension[] {
+    public get error_extensions(): ShipgeniusGraphqlErrorExtension[] {
         function isShipgeniusErrorExtension(ext: JsonObject | undefined | null): ext is ShipgeniusGraphqlErrorExtension {
             return (
                 typeof ext == "object" &&
