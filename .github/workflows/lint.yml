@@ -7,6 +7,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+  push:
+    branches: ["main"]
+
 permissions:
   contents: write
   checks: write
@@ -30,14 +33,17 @@ jobs:
         run: npm install
 
       - name: ES Lint
+        id: lint
         continue-on-error: true
         run: npm run --silent lint -- --format=json > lint-report.json
 
       - name: Generate report
+        continue-on-error: true
         id: lint_info
         run: python3 .github/scripts/lint_report.py >> $GITHUB_OUTPUT
 
       - name: Leave lint information in comment
+        continue-on-error: ${{ steps.lint.outcome == 'success' }}
         uses: thollander/actions-comment-pull-request@v3
         with:
           comment-tag: 'lint_info'
