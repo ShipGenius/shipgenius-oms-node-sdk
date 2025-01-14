@@ -67,7 +67,9 @@ export interface ShipGeniusOmsClientConstructorOptions {
 }
 
 /** Standard fetch Response object with some fields removed  */
-export type StrippedResponse = Omit<Response, "body" | "bodyUsed" | "arrayBuffer" | "blob" | "formData" | "bytes">;
+export type StrippedResponse = Omit<Response, "body" | "bodyUsed" | "arrayBuffer" | "blob" | "formData" | "bytes" | "clone"> & {
+    clone: () => StrippedResponse;
+};
 
 /** An error occuring from a non-ok HTTP response */
 export class HttpError extends Error {
@@ -119,22 +121,26 @@ export class HttpError extends Error {
 
     /** Get the error message from the response */
     public async getMessage() {
-        const error_data = (await this.response.json()) as JsonValue;
+        try {
+            const error_data = (await this.response.json()) as JsonValue;
 
-        if (typeof error_data === "object" && error_data !== null && "detail" in error_data && typeof error_data.detail === "string") {
-            return error_data.detail;
-        }
+            if (typeof error_data === "object" && error_data !== null && "detail" in error_data && typeof error_data.detail === "string") {
+                return error_data.detail;
+            }
 
-        if (
-            typeof error_data === "object" &&
-            error_data !== null &&
-            "detail" in error_data &&
-            typeof error_data.detail === "object" &&
-            error_data.detail !== null &&
-            "message" in error_data.detail &&
-            typeof error_data.detail.message === "string"
-        ) {
-            return error_data.detail.message;
+            if (
+                typeof error_data === "object" &&
+                error_data !== null &&
+                "detail" in error_data &&
+                typeof error_data.detail === "object" &&
+                error_data.detail !== null &&
+                "message" in error_data.detail &&
+                typeof error_data.detail.message === "string"
+            ) {
+                return error_data.detail.message;
+            }
+        } catch {
+            /* fall through to default return */
         }
 
         return "An unexpected error occurred.";
