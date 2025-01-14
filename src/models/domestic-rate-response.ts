@@ -15,6 +15,8 @@ export interface DomesticRateResponseInterface {
     requested_rate_class: RateClass;
     /** The service code requested. */
     service_code: string;
+    /** The account number used for the request */
+    account_number: string | null;
 }
 
 /** Base class for returned rates */
@@ -23,6 +25,7 @@ export default class DomesticRateResponse implements DomesticRateResponseInterfa
     public carrier: CarrierName;
     public requested_rate_class: RateClass;
     public service_code: string;
+    public account_number: string | null;
 
     /** @hidden */
     constructor(data: DomesticRateResponseInterface) {
@@ -30,5 +33,6 @@ export default class DomesticRateResponse implements DomesticRateResponseInterfa
         this.carrier = data.carrier;
         this.requested_rate_class = data.requested_rate_class;
         this.service_code = data.service_code;
+        this.account_number = data.account_number;
     }
 }

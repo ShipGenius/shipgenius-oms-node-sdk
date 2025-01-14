@@ -10,6 +10,7 @@ const data: DomesticRateInterface = {
     carrier: CarrierName.UPS,
     requested_rate_class: RateClass.NEGOTIATED,
     service_code: "GND",
+    account_number: null,
     rate_id: "def456",
     warnings: [
         {

@@ -9,6 +9,7 @@ describe("DomesticRateResponse", () => {
             carrier: CarrierName.DHL,
             requested_rate_class: RateClass.STANDARD,
             service_code: "GND",
+            account_number: "abc123",
         };
 
         const obj = new DomesticRateResponse(data);

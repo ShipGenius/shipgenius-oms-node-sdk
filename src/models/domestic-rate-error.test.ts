@@ -13,6 +13,7 @@ describe("DomesticRateError", () => {
             carrier: CarrierName.UPS,
             requested_rate_class: RateClass.STANDARD,
             service_code: "GND",
+            account_number: null,
         };
 
         const obj = new DomesticRateError(data);

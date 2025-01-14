@@ -15,6 +15,7 @@ describe("BulkDomesticRateResponse", () => {
                     __typename: "DomesticRateError",
                     carrier: CarrierName.UPS,
                     requested_rate_class: RateClass.NEGOTIATED,
+                    account_number: null,
                     service_code: "WHATEVER",
                     code: CarrierErrorCode.SERVICE_NOT_FOUND,
                     message: "UPS does not offer service 'WHATEVER'",
@@ -23,6 +24,7 @@ describe("BulkDomesticRateResponse", () => {
                     __typename: "DomesticRate",
                     carrier: CarrierName.UPS,
                     requested_rate_class: RateClass.NEGOTIATED,
+                    account_number: null,
                     service_code: "GND",
                     rate_id: "def456",
                     warnings: [
