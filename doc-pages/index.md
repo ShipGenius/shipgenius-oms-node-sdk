@@ -28,7 +28,7 @@ Your will need this key in the next step.
 > [!CAUTION]
 > ### Keep your key safe
 > 
-> Your API key can be used to authenticate as business with the permissions you granted.
+> Your API key can be used to authenticate as your business account with the permissions you granted.
 >
 > Here are some rules to make sure it stays safe:
 > - Do not share it with anyone who should not have this access, including Shipgenius customer support
