@@ -1,0 +1,47 @@
+
+name: Lint
+
+on:
+  workflow_dispatch:
+
+  pull_request:
+    branches: [ "main" ]
+
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: write
+  checks: write
+  pull-requests: write
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.20.x
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm install
+
+      - name: ES Lint
+        continue-on-error: true
+        run: npm run --silent lint -- --format=json > lint-report.json
+
+      - name: Generate report
+        id: lint_info
+        run: python3 .github/scripts/lint_report.py >> $GITHUB_OUTPUT
+
+      - name: Leave lint information in comment
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          comment-tag: 'lint_info'
+          message: ${{ steps.lint_info.outputs.message }}

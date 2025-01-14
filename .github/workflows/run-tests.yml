@@ -1,0 +1,46 @@
+
+name: Unit Tests
+
+on:
+  workflow_dispatch:
+
+  pull_request:
+    branches: [ "main" ]
+    
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: write
+  checks: write
+  pull-requests: write
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+  
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.20.x
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm run cicd-coverage-report
+
+      - name: Comment coverage report
+        if: always()
+        uses: MishaKav/jest-coverage-comment@main
+        with:
+          title: Unit Test Report
+          junitxml-path: ./junit.xml
+          summary-title: Coverage Summary
+          junitxml-title: Test Summary
+          coverage-title: Coverage Details
