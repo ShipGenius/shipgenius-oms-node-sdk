@@ -26,8 +26,8 @@ describe("TrackingDeliveryInformation", () => {
         };
 
         const obj = new TrackingDeliveryInformation(data);
-        expect(obj.delivery_time_datetime?.iso_datetime_string).toBe("2025-12-01T12:00:00+00:00");
-        expect(obj.delivery_attempt_time_datetime?.iso_datetime_string).toBe("2025-11-29T12:00:00+00:00");
+        expect(obj.getDeliveryTimeDatetime()?.iso_datetime_string).toBe("2025-12-01T12:00:00+00:00");
+        expect(obj.getDeliveryAttemptTimeDatetime()?.iso_datetime_string).toBe("2025-11-29T12:00:00+00:00");
     });
 
     it("handles null delivery times", () => {
@@ -40,7 +40,7 @@ describe("TrackingDeliveryInformation", () => {
         };
 
         const obj = new TrackingDeliveryInformation(data);
-        expect(obj.delivery_time_datetime).toBeNull();
-        expect(obj.delivery_attempt_time_datetime).toBeNull();
+        expect(obj.getDeliveryTimeDatetime()).toBeNull();
+        expect(obj.getDeliveryAttemptTimeDatetime()).toBeNull();
     });
 });

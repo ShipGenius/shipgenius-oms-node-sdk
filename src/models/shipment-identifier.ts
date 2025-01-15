@@ -15,7 +15,11 @@ import { JsonObject, OneOf } from "../typescript-utils.js";
  * @internal
  */
 export interface ShipmentIdentifierOption extends JsonObject {
-    /** The ID of the shipment in the Shipgenius OMS database */
+    /**
+     * The ID of the shipment in the Shipgenius OMS database
+     *
+     * This value is returned in {@link "@shipgenius/oms/models".DomesticLabel.id | DomesticLabel.id}
+     */
     labelgenius_id: string;
     /**
      * The shipment id, if supported by the carrier.

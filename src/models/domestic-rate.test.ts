@@ -70,7 +70,7 @@ describe("DomesticRate", () => {
             estimated_delivery: "2025-02-15",
         });
 
-        expect(obj.estimated_delivery_date?.fields).toEqual({
+        expect(obj.getEstimatedDeliveryDate()?.fields).toEqual({
             day: 15,
             month: 2,
             year: 2025,
@@ -83,6 +83,6 @@ describe("DomesticRate", () => {
             estimated_delivery: null,
         });
 
-        expect(obj.estimated_delivery_date).toBeNull();
+        expect(obj.getEstimatedDeliveryDate()).toBeNull();
     });
 });

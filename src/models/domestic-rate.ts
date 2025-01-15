@@ -46,7 +46,7 @@ export interface DomesticRateInterface extends DomesticRateResponseInterface {
      *
      * > [!NOTE]
      * > This field is an ISO date string string.
-     * > See {@link DomesticRate.estimated_delivery_date} value in other representations
+     * > See {@link DomesticRate.getEstimatedDeliveryDate} value in other representations
      */
     readonly estimated_delivery: string | null;
     /** Whether the carrier has a guarantee regarding the delivery time. */
@@ -96,7 +96,7 @@ export default class DomesticRate extends DomesticRateResponse implements Domest
     }
 
     /** {@link estimated_delivery} in other representations */
-    public get estimated_delivery_date() {
+    public getEstimatedDeliveryDate() {
         if (this.estimated_delivery == null) {
             return null;
         }

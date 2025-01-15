@@ -21,8 +21,8 @@ describe("DeliveryWindow", () => {
 
         const obj = new DeliveryWindow(data);
 
-        expect(obj.start_datetime?.iso_datetime_string).toBe("2025-01-15T00:00:00+00:00");
-        expect(obj.end_datetime?.iso_datetime_string).toBe("2025-01-15T12:00:00+00:00");
+        expect(obj.getStartDatetime()?.iso_datetime_string).toBe("2025-01-15T00:00:00+00:00");
+        expect(obj.getEndDatetime()?.iso_datetime_string).toBe("2025-01-15T12:00:00+00:00");
     });
 
     it("handles null datetimes", () => {
@@ -33,7 +33,7 @@ describe("DeliveryWindow", () => {
 
         const obj = new DeliveryWindow(data);
 
-        expect(obj.start_datetime).toBeNull();
-        expect(obj.end_datetime).toBeNull();
+        expect(obj.getStartDatetime()).toBeNull();
+        expect(obj.getEndDatetime()).toBeNull();
     });
 });

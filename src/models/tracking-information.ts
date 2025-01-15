@@ -37,7 +37,7 @@ export interface TrackingInformationInterface {
      *
      * Value is an ISO datetime string.
      * To get this value in other representations,
-     * see {@link TrackingInformation.last_updated_datetime | `last_updated_datetime`}.
+     * see {@link TrackingInformation.getLastUpdatedDatetime | `getLastUpdatedDatetime`}.
      */
     readonly last_updated: string | null;
     /**
@@ -80,7 +80,7 @@ export default class TrackingInformation implements TrackingInformationInterface
     /**
      * {@link last_updated} in different representations
      */
-    public get last_updated_datetime(): DatetimeInformation | null {
+    public getLastUpdatedDatetime(): DatetimeInformation | null {
         if (this.last_updated === null) {
             return null;
         }

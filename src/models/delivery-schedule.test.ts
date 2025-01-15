@@ -27,7 +27,7 @@ describe("DeliverySchedule", () => {
         };
 
         const obj = new DeliverySchedule(data);
-        expect(obj.expected_delivery_datetime?.iso_datetime_string).toBe("2025-12-15T00:00:00+00:00");
+        expect(obj.getExpectedDeliveryDatetime()?.iso_datetime_string).toBe("2025-12-15T00:00:00+00:00");
     });
 
     it("handles null expected datetimes", () => {
@@ -38,6 +38,6 @@ describe("DeliverySchedule", () => {
         };
 
         const obj = new DeliverySchedule(data);
-        expect(obj.expected_delivery_datetime).toBeNull();
+        expect(obj.getExpectedDeliveryDatetime()).toBeNull();
     });
 });

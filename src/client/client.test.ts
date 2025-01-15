@@ -3,12 +3,13 @@ import AddressValidationInfo from "../models/address-validation-info";
 import BulkDomesticRateResponse from "../models/bulk-domestic-rate-response";
 import Carrier, { CarrierName } from "../models/carrier";
 import CarrierService from "../models/carrier-service";
+import DomesticLabel, { DomesticLabelInterface } from "../models/domestic-label";
+import LabelFormat from "../models/label-format";
 import LengthUnit from "../models/length-unit";
 import Locale from "../models/locale";
 import RateClass from "../models/rate-class";
 import StateCode from "../models/state-code";
-import { TrackingEventInterface } from "../models/tracking-event";
-import TrackingInformation, { TrackingInformationInterface } from "../models/tracking-information";
+import TrackingInformation from "../models/tracking-information";
 import { ShipmentRelation, TrackingNotificationLevel } from "../models/tracking-subscription";
 import VoidLabelResponse from "../models/void-label-response";
 import WeightUnit from "../models/weight-unit";
@@ -1321,3 +1322,242 @@ describe("ShipGeniusOmsClient.subscribeToTrackingUpdates", () => {
         expect(fetch_expectations_passed).toBe(true);
     });
 });
+
+describe("ShipGeniusOmsClient.recoverLabel", () => {
+
+    let original_fetch = globalThis.fetch;
+    afterEach(() => {
+        globalThis.fetch = original_fetch;
+    });
+
+    it("recovers labels (default params)", async () => {
+
+        let fetch_expectations_passed = false;
+
+        global.fetch = jest.fn().mockImplementation(async (url: string, args: RequestInit) => {
+            expect(url).toBe("https://api.test/graphql");
+            expect({
+                ...args,
+                body: JSON.parse(args.body as string),
+            }).toEqual({
+                body: {
+                    documentId: "RecoverLabel",
+                    variables: {
+                        transaction_id: "28396004-65f3-4d6f-833a-d31e25e5cd41",
+                    },
+                },
+                headers: {
+                    Accept: "application/graphql-response+json",
+                    Authorization: "Bearer def456",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+            });
+
+            fetch_expectations_passed = true;
+
+            return {
+                ok: true,
+                json: async (): Promise<{data: { recover_label: DomesticLabelInterface<LabelFormat.NONE> }}>  => ({
+                    data: {
+                        recover_label: {
+                            transaction_id: "28396004-65f3-4d6f-833a-d31e25e5cd41",
+                            id: "123",
+                            carrier: CarrierName.UPS,
+                            service_code: "GND",
+                            account_number: null,
+                            warnings: [],
+                            disclaimers: [],
+                            estimated_delivery: null,
+                            guaranteed_delivery: null,
+                            carrier_specific: {},
+                            shipment_id: "abc123",
+                            tracking_number: "abc123",
+                            label_uuid: "cabd7247-0185-46ab-aafb-56c357404f26",
+                            labelgenius_charge: "12.95",
+                            itemized_charges: [],
+                            base_price: "10.00",
+                            total_price: "12.95",
+                            billing_weight: 5,
+                            label: null
+                        },
+                    },
+                }),
+            };
+        });
+
+        const client = new ShipGeniusOmsClient("def456", { url: "https://api.test" });
+
+        const response = await client.recoverLabel("28396004-65f3-4d6f-833a-d31e25e5cd41");
+        expect(response).toBeInstanceOf(DomesticLabel);
+        expect(response.label).toBeNull();
+
+        expect(fetch_expectations_passed).toBe(true);
+    });
+
+    it("recovers labels (png)", async () => {
+
+        let fetch_expectations_passed = false;
+
+        global.fetch = jest.fn().mockImplementation(async (url: string, args: RequestInit) => {
+            expect(url).toBe("https://api.test/graphql");
+            expect({
+                ...args,
+                body: JSON.parse(args.body as string),
+            }).toEqual({
+                body: {
+                    documentId: "RecoverLabelPng",
+                    variables: {
+                        transaction_id: "28396004-65f3-4d6f-833a-d31e25e5cd41",
+                        "as_data_uri": true,
+                        "payment_id": "1b466f32-3a33-4e16-a29d-34e12f023ea7",
+                        "weight_unit": WeightUnit.KG,
+                    },
+                },
+                headers: {
+                    Accept: "application/graphql-response+json",
+                    Authorization: "Bearer def456",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+            });
+
+            fetch_expectations_passed = true;
+
+            return {
+                ok: true,
+                json: async (): Promise<{data: { recover_label: DomesticLabelInterface<LabelFormat.PNG> }}>  => ({
+                    data: {
+                        recover_label: {
+                            transaction_id: "28396004-65f3-4d6f-833a-d31e25e5cd41",
+                            id: "123",
+                            carrier: CarrierName.UPS,
+                            service_code: "GND",
+                            account_number: null,
+                            warnings: [],
+                            disclaimers: [],
+                            estimated_delivery: null,
+                            guaranteed_delivery: null,
+                            carrier_specific: {},
+                            shipment_id: "abc123",
+                            tracking_number: "abc123",
+                            label_uuid: "cabd7247-0185-46ab-aafb-56c357404f26",
+                            labelgenius_charge: "12.95",
+                            itemized_charges: [],
+                            base_price: "10.00",
+                            total_price: "12.95",
+                            billing_weight: 5,
+                            // @ts-expect-error no `zpl` field
+                            label: {
+                                png: {
+                                    mime_type: "image/png",
+                                    url: "https://test/image.png",
+                                    base64_encoded: "data:image/png;base64,abcd"
+                                },
+                            }
+                        },
+                    },
+                }),
+            };
+        });
+
+        const client = new ShipGeniusOmsClient("def456", { url: "https://api.test" });
+
+        const response = await client.recoverLabel(
+            "28396004-65f3-4d6f-833a-d31e25e5cd41",
+            {
+                "as_data_uri": true,
+                "format": LabelFormat.PNG,
+                "payment_id": "1b466f32-3a33-4e16-a29d-34e12f023ea7",
+                "weight_unit": WeightUnit.KG,
+            }
+        );
+        expect(response).toBeInstanceOf(DomesticLabel);
+        expect(response.label.png.mime_type).toBe("image/png");
+
+        expect(fetch_expectations_passed).toBe(true);
+    });
+
+    it("recovers labels (zpl)", async () => {
+
+        let fetch_expectations_passed = false;
+
+        global.fetch = jest.fn().mockImplementation(async (url: string, args: RequestInit) => {
+            expect(url).toBe("https://api.test/graphql");
+            expect({
+                ...args,
+                body: JSON.parse(args.body as string),
+            }).toEqual({
+                body: {
+                    documentId: "RecoverLabelZpl",
+                    variables: {
+                        transaction_id: "28396004-65f3-4d6f-833a-d31e25e5cd41",
+                        "as_data_uri": true,
+                        "payment_id": "1b466f32-3a33-4e16-a29d-34e12f023ea7",
+                        "weight_unit": WeightUnit.KG,
+                    },
+                },
+                headers: {
+                    Accept: "application/graphql-response+json",
+                    Authorization: "Bearer def456",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+            });
+
+            fetch_expectations_passed = true;
+
+            return {
+                ok: true,
+                json: async (): Promise<{data: { recover_label: DomesticLabelInterface<LabelFormat.ZPL> }}>  => ({
+                    data: {
+                        recover_label: {
+                            transaction_id: "28396004-65f3-4d6f-833a-d31e25e5cd41",
+                            id: "123",
+                            carrier: CarrierName.UPS,
+                            service_code: "GND",
+                            account_number: null,
+                            warnings: [],
+                            disclaimers: [],
+                            estimated_delivery: null,
+                            guaranteed_delivery: null,
+                            carrier_specific: {},
+                            shipment_id: "abc123",
+                            tracking_number: "abc123",
+                            label_uuid: "cabd7247-0185-46ab-aafb-56c357404f26",
+                            labelgenius_charge: "12.95",
+                            itemized_charges: [],
+                            base_price: "10.00",
+                            total_price: "12.95",
+                            billing_weight: 5,
+                            // @ts-expect-error no `png` field
+                            label: {
+                                zpl: {
+                                    mime_type: "application/zpl",
+                                    url: "https://test/image.zpl",
+                                    base64_encoded: "data:application/zpl;base64,abcd"
+                                },
+                            }
+                        },
+                    },
+                }),
+            };
+        });
+
+        const client = new ShipGeniusOmsClient("def456", { url: "https://api.test" });
+
+        const response = await client.recoverLabel(
+            "28396004-65f3-4d6f-833a-d31e25e5cd41",
+            {
+                "as_data_uri": true,
+                "format": LabelFormat.ZPL,
+                "payment_id": "1b466f32-3a33-4e16-a29d-34e12f023ea7",
+                "weight_unit": WeightUnit.KG,
+            }
+        );
+        expect(response).toBeInstanceOf(DomesticLabel);
+        expect(response.label.zpl.mime_type).toBe("application/zpl");
+
+        expect(fetch_expectations_passed).toBe(true);
+    });
+})

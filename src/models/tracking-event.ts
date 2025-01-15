@@ -33,7 +33,7 @@ export default class TrackingEvent implements TrackingEventInterface {
     }
 
     /** {@link event_time} in other representations */
-    public get event_time_datetime(): DatetimeInformation | null {
+    public getEventDatetime(): DatetimeInformation | null {
         if (this.event_time === null) {
             return null;
         }

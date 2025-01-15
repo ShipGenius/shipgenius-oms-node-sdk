@@ -31,7 +31,7 @@ export default class DeliverySchedule implements DeliveryScheduleInterface {
     }
 
     /** {@link expected_delivery} in different representations */
-    public get expected_delivery_datetime(): DatetimeInformation | null {
+    public getExpectedDeliveryDatetime(): DatetimeInformation | null {
         if (this.expected_delivery === null) {
             return null;
         }

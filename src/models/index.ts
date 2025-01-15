@@ -36,6 +36,9 @@ export { default as TrackingAddressAndContact } from "./tracking-address-and-con
 export { default as TrackingContactInfo } from "./tracking-contact-info.js";
 export { default as DeliveryWindow } from "./delivery-window.js";
 export { default as TrackingStatus } from "./tracking-status.js";
+export { default as DomesticLabel } from "./domestic-label.js";
+export { default as LabelImage } from "./label-image.js";
+export { default as LabelData } from "./label-data.js";
 
 // GraphQL type interfaces
 export type { AdditionalAddressInformationInterface } from "./additional-address-information.js";
@@ -65,6 +68,9 @@ export type { TrackingAddressAndContactInterface } from "./tracking-address-and-
 export type { TrackingContactInfoInterface } from "./tracking-contact-info.js";
 export type { DeliveryWindowInterface } from "./delivery-window.js";
 export type { TrackingStatusInterface } from "./tracking-status.js";
+export type { DomesticLabelInterface } from "./domestic-label.js";
+export type { LabelImageInterface } from "./label-image.js";
+export type { LabelDataInterface } from "./label-data.js";
 
 // GraphQL inputs
 export type { default as AdditionalDomesticInfoInput } from "./additional-domestic-info-input.js";
@@ -161,3 +167,6 @@ export { DateInformation } from "./date.js";
 export type { DateFields } from "./date.js";
 export { DatetimeInformation } from "./date-time.js";
 export type { DatetimeFields } from "./date-time.js";
+
+// Other
+export { default as LabelFormat } from "./label-format.js";

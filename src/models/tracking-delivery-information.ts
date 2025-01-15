@@ -36,7 +36,7 @@ export default class TrackingDeliveryInformation implements TrackingDeliveryInfo
     }
 
     /** {@link delivery_time} in other representations */
-    public get delivery_time_datetime(): DatetimeInformation | null {
+    public getDeliveryTimeDatetime(): DatetimeInformation | null {
         if (this.delivery_time === null) {
             return null;
         }
@@ -44,7 +44,7 @@ export default class TrackingDeliveryInformation implements TrackingDeliveryInfo
     }
 
     /** {@link delivery_attempt_time} in other representations */
-    public get delivery_attempt_time_datetime(): DatetimeInformation | null {
+    public getDeliveryAttemptTimeDatetime(): DatetimeInformation | null {
         if (this.delivery_attempt_time === null) {
             return null;
         }

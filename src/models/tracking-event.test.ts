@@ -48,7 +48,7 @@ describe("TrackingEvent", () => {
 
         const obj = new TrackingEvent(data);
 
-        expect(obj.event_time_datetime?.iso_datetime_string).toBe("2025-01-15T12:45:56+00:00");
+        expect(obj.getEventDatetime()?.iso_datetime_string).toBe("2025-01-15T12:45:56+00:00");
     });
 
     it("handles null event times", () => {
@@ -64,6 +64,6 @@ describe("TrackingEvent", () => {
 
         const obj = new TrackingEvent(data);
 
-        expect(obj.event_time_datetime).toBeNull();
+        expect(obj.getEventDatetime()).toBeNull();
     });
 });

@@ -44,7 +44,7 @@ export default class TrackingShipment implements TrackingShipmentInterface {
     /**
      * {@link ship_time} in different representations
      */
-    public get ship_time_datetime(): DatetimeInformation | null {
+    public getShipDatetime(): DatetimeInformation | null {
         if (this.ship_time === null) {
             return null;
         }

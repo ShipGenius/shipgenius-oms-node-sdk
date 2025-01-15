@@ -54,6 +54,10 @@ import {
     TrackingNotificationLevel,
     Locale,
     RelationToShipment,
+    LabelFormat,
+    DomesticLabel,
+    LabelImage,
+    LabelData,
 } from "./index";
 
 describe("@shipgenius/oms/models", () => {
@@ -86,6 +90,9 @@ describe("@shipgenius/oms/models", () => {
         expect(DeliveryWindow).toBeDefined();
         expect(TrackingStatus).toBeDefined();
         expect(TrackingContactInfo).toBeDefined();
+        expect(DomesticLabel).toBeDefined();
+        expect(LabelImage).toBeDefined();
+        expect(LabelData).toBeDefined();
 
         // Enums
         expect(CarrierErrorCode).toBeDefined();
@@ -119,5 +126,8 @@ describe("@shipgenius/oms/models", () => {
         // Scalars
         expect(DateInformation).toBeDefined();
         expect(DatetimeInformation).toBeDefined();
+
+        // Other
+        expect(LabelFormat).toBeDefined();
     });
 });

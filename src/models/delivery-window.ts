@@ -24,7 +24,7 @@ export default class DeliveryWindow implements DeliveryWindowInterface {
     }
 
     /** {@link start} in different representations */
-    public get start_datetime(): DatetimeInformation | null {
+    public getStartDatetime(): DatetimeInformation | null {
         if (this.start === null) {
             return null;
         }
@@ -32,7 +32,7 @@ export default class DeliveryWindow implements DeliveryWindowInterface {
     }
 
     /** {@link end} in different representations */
-    public get end_datetime(): DatetimeInformation | null {
+    public getEndDatetime(): DatetimeInformation | null {
         if (this.end === null) {
             return null;
         }

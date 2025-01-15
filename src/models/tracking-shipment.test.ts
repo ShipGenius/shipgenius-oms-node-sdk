@@ -96,7 +96,7 @@ describe("TrackingShipment", () => {
 
         const obj = new TrackingShipment(data);
 
-        expect(obj.ship_time_datetime?.iso_datetime_string).toBe("2025-01-14T12:00:00+00:00");
+        expect(obj.getShipDatetime()?.iso_datetime_string).toBe("2025-01-14T12:00:00+00:00");
     });
 
     it("handles null datetime information", () => {
@@ -133,6 +133,6 @@ describe("TrackingShipment", () => {
 
         const obj = new TrackingShipment(data);
 
-        expect(obj.ship_time_datetime).toBeNull();
+        expect(obj.getShipDatetime()).toBeNull();
     });
 });

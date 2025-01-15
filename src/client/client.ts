@@ -16,6 +16,8 @@ import FullShipmentIdentifier from "../models/full-shipment-identifier.js";
 import TrackingInformation, { GetTrackingQueryResponse } from "../models/tracking-information.js";
 import { VoidLabelQueryResponse } from "../models/void-label-response.js";
 import { Trackingsubscription } from "../models/tracking-subscription.js";
+import LabelFormat from "../models/label-format.js";
+import DomesticLabel, { DomesticLabelInterface } from "../models/domestic-label.js";
 
 /**
  * A client for connecting to the ShipGenius OMS API
@@ -394,6 +396,86 @@ export default class ShipGeniusOmsClient {
         )) as GetTrackingQueryResponse;
 
         return new TrackingInformation(get_tracking);
+    }
+
+    /**
+     * Recover a lost label using the transaction if provided when the label was initially created.
+     *
+     * > [!NOTE]
+     * >
+     * > This mutation is designed for rare scenarios, such as a lost connection or unexpected crash during the label creation process.
+     * >
+     * > For further assistance, contact us at info@shipgeni.us
+     * >
+     * > - Recovery should only be used if there was a failure to receive a label calling from {@link createLabel} or {@link rateAndShip}
+     * > - This recovery process is only valid within **24 hours** of generating the label.
+     *
+     * @param transaction_id
+     * The {@link LabelCreationInput.transaction_id} or {@link DomesticRateAndShipInput.transaction_id}
+     * used when creating the label you want to recover
+     * @param options Additional options for configuring the recovery and the returned label
+     *
+     * @returns the recovered label
+     */
+    public async recoverLabel<Format extends LabelFormat = LabelFormat.NONE>(
+        transaction_id: string,
+        options?: {
+            /**
+             * The payment ID to use to pay for the label if payment was not successful initially.
+             *
+             * The payment method will not be charged if the label was already paid for.
+             *
+             * If something goes wrong and you get double-charged for a label,
+             * contact info@shipgeni.us as soon as possible to resolve the issue.
+             */
+            payment_id?: string | null;
+            /**
+             * The format to return label images in.
+             *
+             * Only one format can be specified, as converting image formats
+             * is a larger-than-typical workload.
+             *
+             * If you need the image in
+             * multiple formats, you can run a custom query via {@link runGraphql}.
+             *
+             * @default
+             * {@link LabelFormat.NONE}
+             */
+            format?: Format;
+            /**
+             * The unit of measure to return weights in
+             *
+             * @default
+             * {@link WeightUnit.LBS | LBS}
+             */
+            weight_unit?: WeightUnit;
+            /**
+             * Whether to return the image as a base64 `data:` uri (`true`),
+             * or a base64 encoded bytes string (`false`)
+             *
+             * @default false
+             */
+            as_data_uri?: boolean;
+        },
+    ): Promise<DomesticLabel<Format>> {
+        const { recover_label } = (await this.makeGqlRequest(
+            {
+                document:
+                    options?.format === LabelFormat.PNG
+                        ? "RecoverLabelPng"
+                        : options?.format === LabelFormat.ZPL
+                        ? "RecoverLabelZpl"
+                        : "RecoverLabel",
+            },
+            {
+                transaction_id,
+                payment_id: options?.payment_id,
+                weight_unit: options?.weight_unit,
+                as_data_uri: options?.as_data_uri,
+            }
+    )) as { recover_label: DomesticLabelInterface<Format> };
+
+        return new DomesticLabel(recover_label);
     }
 
     /**

@@ -150,7 +150,7 @@ describe("TrackingInformation", () => {
 
         const obj = new TrackingInformation(data);
 
-        expect(obj.last_updated_datetime?.iso_datetime_string).toBe("2025-01-15T12:34:56+00:00");
+        expect(obj.getLastUpdatedDatetime()?.iso_datetime_string).toBe("2025-01-15T12:34:56+00:00");
         expect(obj).toEqual(data);
     });
 
@@ -207,7 +207,7 @@ describe("TrackingInformation", () => {
 
         const obj = new TrackingInformation(data);
 
-        expect(obj.last_updated_datetime).toBeNull();
+        expect(obj.getLastUpdatedDatetime()).toBeNull();
         expect(obj).toEqual(data);
     });
 });
