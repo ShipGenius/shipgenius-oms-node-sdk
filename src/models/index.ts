@@ -126,6 +126,7 @@ export type { default as LengthInput } from "./length-input.js";
 export type { default as Packaging, PackagingOption, BoxDimensions, BagDimensions, CarrierSpecificPackaging } from "./packaging.js";
 export type { default as ShipmentIdentifier, ShipmentIdentifierOption } from "./shipment-identifier.js";
 export type { default as WeightInput } from "./weight-input.js";
+export type { Trackingsubscription, TrackingRecipient, PartiallySupportedTrackingSubscriptionOptions } from "./tracking-subscription.js";
 
 // GraphQL enums
 export { default as CarrierErrorCode } from "./carrier-error-code.js";
@@ -152,6 +153,8 @@ export { default as StateCode } from "./state-code.js";
 export { default as WeightUnit } from "./weight-unit.js";
 export { default as TrackingStatusCode } from "./tracking-status-code.js";
 export { default as VoidLabelResponse } from "./void-label-response.js";
+export { TrackingNotificationLevel, ShipmentRelation as RelationToShipment } from "./tracking-subscription.js";
+export { default as Locale } from "./locale.js";
 
 // Scalar info
 export { DateInformation } from "./date.js";

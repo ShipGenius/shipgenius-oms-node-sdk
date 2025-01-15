@@ -4,17 +4,18 @@ import BulkDomesticRateResponse from "../models/bulk-domestic-rate-response";
 import Carrier, { CarrierName } from "../models/carrier";
 import CarrierService from "../models/carrier-service";
 import LengthUnit from "../models/length-unit";
+import Locale from "../models/locale";
 import RateClass from "../models/rate-class";
 import StateCode from "../models/state-code";
 import { TrackingEventInterface } from "../models/tracking-event";
 import TrackingInformation, { TrackingInformationInterface } from "../models/tracking-information";
+import { ShipmentRelation, TrackingNotificationLevel } from "../models/tracking-subscription";
 import VoidLabelResponse from "../models/void-label-response";
 import WeightUnit from "../models/weight-unit";
 import ShipGeniusOmsClient from "./client";
 import { GraphqlError, HttpError, ServerEnvironment } from "./client-types";
 
 describe("ShipGeniusOmsClient", () => {
-
     it("handles connecting to a literal url", () => {
         const client = new ShipGeniusOmsClient("abc123", { url: "https://api.test" });
 
@@ -102,7 +103,6 @@ describe("ShipGeniusOmsClient.getProcessedUrl", () => {
 });
 
 describe("ShipGeniusOmsClient.getSupportedCarriers", () => {
-
     let original_fetch = globalThis.fetch;
     afterEach(() => {
         globalThis.fetch = original_fetch;
@@ -182,7 +182,6 @@ describe("ShipGeniusOmsClient.getSupportedCarriers", () => {
 });
 
 describe("ShipGeniusOmsClient.getSupportedServices", () => {
-    
     let original_fetch = globalThis.fetch;
     afterEach(() => {
         globalThis.fetch = original_fetch;
@@ -278,7 +277,6 @@ describe("ShipGeniusOmsClient.getSupportedServices", () => {
 });
 
 describe("ShipGeniusOmsClient.runGraphql", () => {
-    
     let original_fetch = globalThis.fetch;
     afterEach(() => {
         globalThis.fetch = original_fetch;
@@ -455,7 +453,6 @@ describe("ShipGeniusOmsClient.runGraphql", () => {
 });
 
 describe("ShipGeniusOmsClient.validateAddress", () => {
-    
     let original_fetch = globalThis.fetch;
     afterEach(() => {
         globalThis.fetch = original_fetch;
@@ -678,16 +675,13 @@ describe("ShipGeniusOmsClient.validateAddress", () => {
             error_message: "Something went wrong",
         });
     });
-
 });
 
 describe("ShipGeniusOmsClient.getDomesticRate", () => {
-    
     let original_fetch = globalThis.fetch;
     afterEach(() => {
         globalThis.fetch = original_fetch;
     });
-
 
     it("fetches domestic shipping rates", async () => {
         let fetch_expectations_passed = false;
@@ -1051,7 +1045,6 @@ describe("ShipGeniusOmsClient.getDomesticRate", () => {
 });
 
 describe("ShipGeniusOmsClient.getTrackingInformation", () => {
-    
     let original_fetch = globalThis.fetch;
     afterEach(() => {
         globalThis.fetch = original_fetch;
@@ -1171,16 +1164,13 @@ describe("ShipGeniusOmsClient.getTrackingInformation", () => {
     });
 });
 
-
-describe("ShipGeniusOmsClient.voidLabel",() => {
-    
+describe("ShipGeniusOmsClient.voidLabel", () => {
     let original_fetch = globalThis.fetch;
     afterEach(() => {
         globalThis.fetch = original_fetch;
     });
 
     it("voids labels", async () => {
-
         let fetch_expectations_passed = false;
 
         global.fetch = jest.fn().mockImplementation(async (url: string, args: RequestInit) => {
@@ -1215,10 +1205,10 @@ describe("ShipGeniusOmsClient.voidLabel",() => {
                 ok: true,
                 json: async () => ({
                     data: {
-                        void_label: "SUCCESS"
-                    }
-                })
-            }
+                        void_label: "SUCCESS",
+                    },
+                }),
+            };
         });
 
         const client = new ShipGeniusOmsClient("def456", { url: "https://api.test" });
@@ -1233,6 +1223,101 @@ describe("ShipGeniusOmsClient.voidLabel",() => {
 
         expect(response).toBe(VoidLabelResponse.SUCCESS);
         expect(fetch_expectations_passed).toBe(true);
+    });
+});
 
+describe("ShipGeniusOmsClient.subscribeToTrackingUpdates", () => {
+    let original_fetch = globalThis.fetch;
+    afterEach(() => {
+        globalThis.fetch = original_fetch;
+    });
+
+    it("voids labels", async () => {
+        let fetch_expectations_passed = false;
+
+        global.fetch = jest.fn().mockImplementation(async (url: string, args: RequestInit) => {
+            expect(url).toBe("https://api.test/graphql");
+            expect({
+                ...args,
+                body: JSON.parse(args.body as string),
+            }).toEqual({
+                body: {
+                    documentId: "SubscribeToTrackingUpdates",
+                    variables: {
+                        label_info: {
+                            carrier: "UPS",
+                            account_number: "abc123",
+                            shipment: {
+                                labelgenius_id: "789",
+                            },
+                        },
+                        subscribers: {
+                            recipient: {
+                                email: "test@example.com",
+                            },
+                            recipient_first_name: "Test",
+                            recipient_last_name: "User",
+                            level: "VERBOSE",
+                            carrier_dependent: {
+                                reply_to_address: "info@example.com",
+                                from_name: "Test Inc",
+                                subject: "You package is doing something",
+                                memo: "This is what it's doing",
+                                locale: "es_US",
+                                relation_to_shipment: "RECIPIENT",
+                            },
+                        },
+                    },
+                },
+                headers: {
+                    Accept: "application/graphql-response+json",
+                    Authorization: "Bearer def456",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+            });
+
+            fetch_expectations_passed = true;
+
+            return {
+                ok: true,
+                json: async () => ({
+                    data: {
+                        subscribe_to_tracking_updates: [true],
+                    },
+                }),
+            };
+        });
+
+        const client = new ShipGeniusOmsClient("def456", { url: "https://api.test" });
+
+        const response = await client.subscribeToTrackingUpdates(
+            {
+                carrier: CarrierName.UPS,
+                account_number: "abc123",
+                shipment: {
+                    labelgenius_id: "789",
+                },
+            },
+            {
+                recipient: {
+                    email: "test@example.com",
+                },
+                recipient_first_name: "Test",
+                recipient_last_name: "User",
+                level: TrackingNotificationLevel.VERBOSE,
+                carrier_dependent: {
+                    reply_to_address: "info@example.com",
+                    from_name: "Test Inc",
+                    subject: "You package is doing something",
+                    memo: "This is what it's doing",
+                    locale: Locale.es_US,
+                    relation_to_shipment: ShipmentRelation.RECIPIENT,
+                },
+            },
+        );
+
+        expect(response).toEqual([true]);
+        expect(fetch_expectations_passed).toBe(true);
     });
 });

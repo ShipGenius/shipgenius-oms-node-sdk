@@ -15,6 +15,7 @@ import DomesticRateInput from "../models/domestic-rate-input.js";
 import FullShipmentIdentifier from "../models/full-shipment-identifier.js";
 import TrackingInformation, { GetTrackingQueryResponse } from "../models/tracking-information.js";
 import { VoidLabelQueryResponse } from "../models/void-label-response.js";
+import { Trackingsubscription } from "../models/tracking-subscription.js";
 
 /**
  * A client for connecting to the ShipGenius OMS API
@@ -397,20 +398,42 @@ export default class ShipGeniusOmsClient {
 
     /**
      * Void the specified label and request a refund if applicable
-     * 
+     *
      * @param label_info The label to void
-     * 
+     *
      * @returns The success status of the void
      *
      * @throws {@link client.HttpError} if the response is not `ok`
      * @throws {@link client.GraphqlError} if the response contains an `errors` key
      */
     public async voidLabel(label_info: FullShipmentIdentifier) {
-        const { void_label } = (await this.makeGqlRequest(
-            { document: "VoidLabel" },
-            { label_info }
-        )) as VoidLabelQueryResponse;
+        const { void_label } = (await this.makeGqlRequest({ document: "VoidLabel" }, { label_info })) as VoidLabelQueryResponse;
 
         return void_label;
+    }
+
+    /**
+     * Request that the list of subscribers recieve notifications
+     * about tracking updates for the specified shipment
+     *
+     * @param label_info The shipment to subscribe to updates for
+     * @param subscribers A list of people to notify about updates
+     *
+     * @returns a list of boolean values indicating whether the
+     * subscriptions were successful, in the same order as the input.
+     *
+     * @throws {@link client.HttpError} if the response is not `ok`
+     * @throws {@link client.GraphqlError} if the response contains an `errors` key
+     */
+    public async subscribeToTrackingUpdates(label_info: FullShipmentIdentifier, subscribers: GraphqlList<Trackingsubscription>) {
+        const { subscribe_to_tracking_updates } = (await this.makeGqlRequest(
+            { document: "SubscribeToTrackingUpdates" },
+            {
+                label_info,
+                subscribers,
+            },
+        )) as { subscribe_to_tracking_updates: boolean[] };
+
+        return subscribe_to_tracking_updates;
     }
 }

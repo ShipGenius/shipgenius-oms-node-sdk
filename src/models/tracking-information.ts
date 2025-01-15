@@ -20,7 +20,7 @@ export interface TrackingInformationInterface {
     readonly shipment_info: TrackingShipmentInterface;
     /**
      * Information about the delivery of the package
-     * 
+     *
      * All fields should be null until a delivery attempt is made
      */
     readonly delivery: TrackingDeliveryInformationInterface;
@@ -34,10 +34,10 @@ export interface TrackingInformationInterface {
     readonly notices: string[];
     /**
      * The datetime of the most recent tracking event.
-     * 
+     *
      * Value is an ISO datetime string.
      * To get this value in other representations,
-     * see {@link TrackingInformation.last_updated_datetime | `last_updated_datetime`}. 
+     * see {@link TrackingInformation.last_updated_datetime | `last_updated_datetime`}.
      */
     readonly last_updated: string | null;
     /**
