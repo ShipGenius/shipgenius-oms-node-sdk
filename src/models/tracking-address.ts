@@ -37,6 +37,7 @@ export default class TrackingAddress implements TrackingAddressInterface {
     public readonly urbanization_code: string | null;
     public readonly residential: boolean | null;
 
+    /** @hidden */
     constructor(data: TrackingAddressInterface) {
         this.street = data.street;
         this.city = data.city;

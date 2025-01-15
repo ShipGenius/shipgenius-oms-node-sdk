@@ -16,13 +16,41 @@ export interface GetTrackingQueryResponse {
  * @internal
  */
 export interface TrackingInformationInterface {
+    /** Information about the shipment as a whole */
     readonly shipment_info: TrackingShipmentInterface;
+    /**
+     * Information about the delivery of the package
+     * 
+     * All fields should be null until a delivery attempt is made
+     */
     readonly delivery: TrackingDeliveryInformationInterface;
+    /**
+     * Information about the schedule for making a delivery
+     */
     readonly schedule: DeliveryScheduleInterface;
+    /**
+     * High-level notices applied to the shipment
+     */
     readonly notices: readonly string[];
+    /**
+     * The datetime of the most recent tracking event.
+     * 
+     * Value is an ISO datetime string.
+     * To get this value in other representations,
+     * see {@link TrackingInformation.last_updated_datetime | `last_updated_datetime`}. 
+     */
     readonly last_updated: string | null;
+    /**
+     * The last location the package was known to be at
+     */
     readonly last_known_location: TrackingAddressInterface | null;
+    /**
+     * A list of tracking events and updates
+     */
     readonly event_history: TrackingEventInterface[];
+    /**
+     * Extra information returned by the carrier
+     */
     readonly carrier_specific: JsonObject;
 }
 

@@ -24,6 +24,11 @@ export interface DatetimeFields extends DateFields {
 export class DatetimeInformation {
     private readonly _datetime_fields: DatetimeFields;
 
+    /**
+     * The datetime as a normalized ISO datetime string,
+     * ensuring equivalent datetimes are given equivalent
+     * datetime string representations.
+     */
     public get iso_datetime_string() {
         // TODO when Temporal is baseline, replace this function with this oneliner:
         // return this.temporal.toString();
