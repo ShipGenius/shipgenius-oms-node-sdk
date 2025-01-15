@@ -15,7 +15,7 @@ export interface BulkDomesticRateResponseInterface {
     /** Echoed back from {@link DomesticRateInput.request_id} */
     readonly request_id: string | null;
     /** The rates for this package */
-    readonly rates: readonly DomesticRateResponseInterface[];
+    readonly rates: DomesticRateResponseInterface[];
 }
 
 /**
@@ -23,7 +23,7 @@ export interface BulkDomesticRateResponseInterface {
  */
 export default class BulkDomesticRateResponse implements BulkDomesticRateResponseInterface {
     public readonly request_id: string | null;
-    public readonly rates: readonly DomesticRateResponse[];
+    public readonly rates: DomesticRateResponse[];
 
     /** @hidden */
     constructor(data: BulkDomesticRateResponseInterface) {

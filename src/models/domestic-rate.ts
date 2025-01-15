@@ -21,9 +21,9 @@ export interface DomesticRateInterface extends DomesticRateResponseInterface {
     readonly rate_id: string | null;
 
     /** A list of warnings for details that might affect the final rate */
-    readonly warnings: readonly CarrierWarningInterface[];
+    readonly warnings: CarrierWarningInterface[];
     /** A list of disclaimers to be shown to the end-user */
-    readonly disclaimers: readonly string[];
+    readonly disclaimers: string[];
     /** The actual class of rate returned by the carrier */
     readonly actual_rate_class: RateClass;
     /**
@@ -40,7 +40,7 @@ export interface DomesticRateInterface extends DomesticRateResponseInterface {
     /** The total price for this option after extras. */
     readonly total_price: `${number}`;
     /** An itemized list of charges for this option */
-    readonly itemized_charges: readonly ItemizedChargeInterface[];
+    readonly itemized_charges: ItemizedChargeInterface[];
     /**
      * When the package is estimated to arrive at its destination.
      *
@@ -64,14 +64,14 @@ export interface DomesticRateInterface extends DomesticRateResponseInterface {
 export default class DomesticRate extends DomesticRateResponse implements DomesticRateInterface {
     public readonly __typename = "DomesticRate" as const;
     public readonly rate_id: string | null;
-    public readonly warnings: readonly CarrierWarning[];
-    public readonly disclaimers: readonly string[];
+    public readonly warnings: CarrierWarning[];
+    public readonly disclaimers: string[];
     public readonly actual_rate_class: RateClass;
     public readonly labelgenius_charge: `${number}`;
     public readonly labelgenius_charge_with_card_fee: `${number}`;
     public readonly base_price: `${number}`;
     public readonly total_price: `${number}`;
-    public readonly itemized_charges: readonly ItemizedCharge[];
+    public readonly itemized_charges: ItemizedCharge[];
     public readonly estimated_delivery: string | null;
     public readonly guaranteed_delivery: boolean | null;
     public readonly billing_weight: number;

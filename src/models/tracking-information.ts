@@ -31,7 +31,7 @@ export interface TrackingInformationInterface {
     /**
      * High-level notices applied to the shipment
      */
-    readonly notices: readonly string[];
+    readonly notices: string[];
     /**
      * The datetime of the most recent tracking event.
      * 
@@ -59,7 +59,7 @@ export default class TrackingInformation implements TrackingInformationInterface
     public readonly shipment_info: TrackingShipment;
     public readonly delivery: TrackingDeliveryInformation;
     public readonly schedule: DeliverySchedule;
-    public readonly notices: readonly string[];
+    public readonly notices: string[];
     public readonly last_updated: string | null;
     public readonly last_known_location: TrackingAddress | null;
     public readonly event_history: TrackingEvent[];

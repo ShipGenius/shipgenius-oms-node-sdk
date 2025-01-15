@@ -10,12 +10,12 @@ export interface TrackingAddressAndContactInterface {
     /** An address relevant to tracking */
     readonly address: TrackingAddressInterface;
     /** Contacts at the address */
-    readonly contacts: readonly TrackingContactInfoInterface[] | null;
+    readonly contacts: TrackingContactInfoInterface[] | null;
 }
 
 export default class TrackingAddressAndContact implements TrackingAddressAndContactInterface {
     public readonly address: TrackingAddress;
-    public readonly contacts: readonly TrackingContactInfo[] | null;
+    public readonly contacts: TrackingContactInfo[] | null;
 
     /** @hidden */
     constructor(data: TrackingAddressAndContactInterface) {

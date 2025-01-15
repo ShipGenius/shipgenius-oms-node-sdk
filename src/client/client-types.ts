@@ -149,8 +149,8 @@ export class HttpError extends Error {
 export class GraphqlError extends Error {
     private _errors: readonly [GraphqlErrorResponse, ...GraphqlErrorResponse[]];
     /** The `errors` key from GraphQL response */
-    public get errors(): readonly [GraphqlErrorResponse, ...GraphqlErrorResponse[]] {
-        return this._errors;
+    public get errors(): [GraphqlErrorResponse, ...GraphqlErrorResponse[]] {
+        return [...this._errors];
     }
 
     /**

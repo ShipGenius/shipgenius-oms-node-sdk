@@ -5,7 +5,7 @@
  */
 export interface TrackingAddressInterface {
     /** The street address */
-    readonly street: readonly string[] | null;
+    readonly street: string[] | null;
     /** The city the address is in */
     readonly city: string | null;
     /**
@@ -29,7 +29,7 @@ export interface TrackingAddressInterface {
 
 /** An address relevant to the tracking of a shipment */
 export default class TrackingAddress implements TrackingAddressInterface {
-    public readonly street: readonly string[] | null;
+    public readonly street: string[] | null;
     public readonly city: string | null;
     public readonly state_or_province_code: string | null;
     public readonly postal_code: string | null;
