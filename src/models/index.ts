@@ -151,6 +151,7 @@ export { default as MessageSeverity } from "./message-severity.js";
 export { default as StateCode } from "./state-code.js";
 export { default as WeightUnit } from "./weight-unit.js";
 export { default as TrackingStatusCode } from "./tracking-status-code.js";
+export { default as VoidLabelResponse } from "./void-label-response.js";
 
 // Scalar info
 export { DateInformation } from "./date.js";

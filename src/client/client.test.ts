@@ -8,15 +8,12 @@ import RateClass from "../models/rate-class";
 import StateCode from "../models/state-code";
 import { TrackingEventInterface } from "../models/tracking-event";
 import TrackingInformation, { TrackingInformationInterface } from "../models/tracking-information";
+import VoidLabelResponse from "../models/void-label-response";
 import WeightUnit from "../models/weight-unit";
 import ShipGeniusOmsClient from "./client";
 import { GraphqlError, HttpError, ServerEnvironment } from "./client-types";
 
 describe("ShipGeniusOmsClient", () => {
-    let original_fetch = globalThis.fetch;
-    afterEach(() => {
-        globalThis.fetch = original_fetch;
-    });
 
     it("handles connecting to a literal url", () => {
         const client = new ShipGeniusOmsClient("abc123", { url: "https://api.test" });
@@ -41,15 +38,17 @@ describe("ShipGeniusOmsClient", () => {
 
         expect(client.version).toBe("v2_5");
     });
+});
+
+describe("ShipGeniusOmsClient.getProcessedUrl", () => {
+    // NOTE This is a test of a private method.
+    // If this test is failing, it doesn't necessarily
+    // mean the the API was broken.
+
+    // TODO remove this test when it's replaced
+    // by a test of a public method that uses query params
 
     it("handles passed in query parameters as a dictionary", () => {
-        // NOTE This is a test of a private method.
-        // If this test is failing, it doesn't necessarily
-        // mean the the API was broken.
-
-        // TODO remove this test when it's replaced
-        // by a test of a public method that uses query params
-
         class Test extends ShipGeniusOmsClient {
             public getProcessedUrl() {
                 return this["processUrl"]("/some-endpoint", false, {
@@ -65,13 +64,6 @@ describe("ShipGeniusOmsClient", () => {
     });
 
     it("handles passed in query parameters as a URLSearchParams", () => {
-        // NOTE This is a test of a private method.
-        // If this test is failing, it doesn't necessarily
-        // mean the the API was broken.
-
-        // TODO remove this test when it's replaced
-        // by a test of a public method that uses query params
-
         class Test extends ShipGeniusOmsClient {
             public getProcessedUrl() {
                 return this["processUrl"](
@@ -92,13 +84,6 @@ describe("ShipGeniusOmsClient", () => {
     });
 
     it("handles merging params from path", () => {
-        // NOTE This is a test of a private method.
-        // If this test is failing, it doesn't necessarily
-        // mean the the API was broken.
-
-        // TODO remove this test when it's replaced
-        // by a test of a public method that uses query params
-
         class Test extends ShipGeniusOmsClient {
             public getProcessedUrl() {
                 return this["processUrl"]("/some-endpoint?extra=more", false, {
@@ -113,6 +98,14 @@ describe("ShipGeniusOmsClient", () => {
         expect(client.getProcessedUrl()).toBe(
             "https://api.lite.shipgeni.us/latest/some-endpoint?param=test&list_value=hello&list_value=world&extra=more",
         );
+    });
+});
+
+describe("ShipGeniusOmsClient.getSupportedCarriers", () => {
+
+    let original_fetch = globalThis.fetch;
+    afterEach(() => {
+        globalThis.fetch = original_fetch;
     });
 
     it("fetches a list of supported carriers", async () => {
@@ -185,6 +178,14 @@ describe("ShipGeniusOmsClient", () => {
         const client = new ShipGeniusOmsClient("def456", { environment: ServerEnvironment.PRODUCTION }, { version: "v2_5" });
         expect(async () => await client.getSupportedCarriers()).rejects.toThrow(HttpError);
         expect(fetch_expectations_passed).toBe(true);
+    });
+});
+
+describe("ShipGeniusOmsClient.getSupportedServices", () => {
+    
+    let original_fetch = globalThis.fetch;
+    afterEach(() => {
+        globalThis.fetch = original_fetch;
     });
 
     it("fetches a list of supported carrier services", async () => {
@@ -273,6 +274,14 @@ describe("ShipGeniusOmsClient", () => {
         const client = new ShipGeniusOmsClient("def456", { environment: ServerEnvironment.PRODUCTION });
         expect(async () => await client.getSupportedServices()).rejects.toThrow(HttpError);
         expect(fetch_expectations_passed).toBe(true);
+    });
+});
+
+describe("ShipGeniusOmsClient.runGraphql", () => {
+    
+    let original_fetch = globalThis.fetch;
+    afterEach(() => {
+        globalThis.fetch = original_fetch;
     });
 
     it("handles GraphQL requests", async () => {
@@ -406,6 +415,7 @@ describe("ShipGeniusOmsClient", () => {
 
         expect(fetch_expectations_passed).toBe(true);
     });
+
     it("handles empty GraphQL http errors", async () => {
         let fetch_expectations_passed = false;
 
@@ -441,6 +451,14 @@ describe("ShipGeniusOmsClient", () => {
         ).rejects.toThrow(HttpError);
 
         expect(fetch_expectations_passed).toBe(true);
+    });
+});
+
+describe("ShipGeniusOmsClient.validateAddress", () => {
+    
+    let original_fetch = globalThis.fetch;
+    afterEach(() => {
+        globalThis.fetch = original_fetch;
     });
 
     it("validates addresses", async () => {
@@ -660,6 +678,16 @@ describe("ShipGeniusOmsClient", () => {
             error_message: "Something went wrong",
         });
     });
+
+});
+
+describe("ShipGeniusOmsClient.getDomesticRate", () => {
+    
+    let original_fetch = globalThis.fetch;
+    afterEach(() => {
+        globalThis.fetch = original_fetch;
+    });
+
 
     it("fetches domestic shipping rates", async () => {
         let fetch_expectations_passed = false;
@@ -1020,6 +1048,14 @@ describe("ShipGeniusOmsClient", () => {
             request_id: "1234",
         });
     });
+});
+
+describe("ShipGeniusOmsClient.getTrackingInformation", () => {
+    
+    let original_fetch = globalThis.fetch;
+    afterEach(() => {
+        globalThis.fetch = original_fetch;
+    });
 
     it("gets tracking information", async () => {
         let fetch_expectations_passed = false;
@@ -1131,5 +1167,72 @@ describe("ShipGeniusOmsClient", () => {
 
         expect(response).toBeInstanceOf(TrackingInformation);
         expect(response.last_updated).toEqual("2025-01-15T12:34:56Z");
+        expect(fetch_expectations_passed).toBe(true);
+    });
+});
+
+
+describe("ShipGeniusOmsClient.voidLabel",() => {
+    
+    let original_fetch = globalThis.fetch;
+    afterEach(() => {
+        globalThis.fetch = original_fetch;
+    });
+
+    it("voids labels", async () => {
+
+        let fetch_expectations_passed = false;
+
+        global.fetch = jest.fn().mockImplementation(async (url: string, args: RequestInit) => {
+            expect(url).toBe("https://api.test/graphql");
+            expect({
+                ...args,
+                body: JSON.parse(args.body as string),
+            }).toEqual({
+                body: {
+                    documentId: "VoidLabel",
+                    variables: {
+                        label_info: {
+                            carrier: "UPS",
+                            account_number: "abc123",
+                            shipment: {
+                                labelgenius_id: "789",
+                            },
+                        },
+                    },
+                },
+                headers: {
+                    Accept: "application/graphql-response+json",
+                    Authorization: "Bearer def456",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+            });
+
+            fetch_expectations_passed = true;
+
+            return {
+                ok: true,
+                json: async () => ({
+                    data: {
+                        void_label: "SUCCESS"
+                    }
+                })
+            }
+        });
+
+        const client = new ShipGeniusOmsClient("def456", { url: "https://api.test" });
+
+        const response = await client.voidLabel({
+            carrier: CarrierName.UPS,
+            account_number: "abc123",
+            shipment: {
+                labelgenius_id: "789",
+            },
+        });
+
+        expect(response).toBe(VoidLabelResponse.SUCCESS);
+        expect(fetch_expectations_passed).toBe(true);
+
     });
 });

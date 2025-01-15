@@ -14,6 +14,7 @@ import CarrierServiceRateInput from "../models/carrier-service-rate-input.js";
 import DomesticRateInput from "../models/domestic-rate-input.js";
 import FullShipmentIdentifier from "../models/full-shipment-identifier.js";
 import TrackingInformation, { GetTrackingQueryResponse } from "../models/tracking-information.js";
+import { VoidLabelQueryResponse } from "../models/void-label-response.js";
 
 /**
  * A client for connecting to the ShipGenius OMS API
@@ -392,5 +393,24 @@ export default class ShipGeniusOmsClient {
         )) as GetTrackingQueryResponse;
 
         return new TrackingInformation(get_tracking);
+    }
+
+    /**
+     * Void the specified label and request a refund if applicable
+     * 
+     * @param label_info The label to void
+     * 
+     * @returns The success status of the void
+     *
+     * @throws {@link client.HttpError} if the response is not `ok`
+     * @throws {@link client.GraphqlError} if the response contains an `errors` key
+     */
+    public async voidLabel(label_info: FullShipmentIdentifier) {
+        const { void_label } = (await this.makeGqlRequest(
+            { document: "VoidLabel" },
+            { label_info }
+        )) as VoidLabelQueryResponse;
+
+        return void_label;
     }
 }

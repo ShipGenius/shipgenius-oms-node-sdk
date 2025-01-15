@@ -50,6 +50,7 @@ import {
     TrackingStatus,
     TrackingStatusCode,
     TrackingContactInfo,
+    VoidLabelResponse,
 } from "./index";
 
 describe("@shipgenius/oms/models", () => {
@@ -106,6 +107,7 @@ describe("@shipgenius/oms/models", () => {
         expect(StateCode).toBeDefined();
         expect(WeightUnit).toBeDefined();
         expect(TrackingStatusCode).toBeDefined();
+        expect(VoidLabelResponse).toBeDefined();
 
         // Scalars
         expect(DateInformation).toBeDefined();
