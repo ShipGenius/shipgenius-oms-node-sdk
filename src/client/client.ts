@@ -399,6 +399,12 @@ export default class ShipGeniusOmsClient {
     }
 
     /**
+     * Purchase a label for a shipment
+     *
+     * @returns
+     */
+
+    /**
      * Recover a lost label using the transaction if provided when the label was initially created.
      *
      * > [!NOTE]
@@ -455,7 +461,7 @@ export default class ShipGeniusOmsClient {
              *
              * @default false
              */
-            as_data_uri?: boolean;
+            as_data_url?: boolean;
         },
     ): Promise<DomesticLabel<Format>> {
         const { recover_label } = (await this.makeGqlRequest(
@@ -464,16 +470,16 @@ export default class ShipGeniusOmsClient {
                     options?.format === LabelFormat.PNG
                         ? "RecoverLabelPng"
                         : options?.format === LabelFormat.ZPL
-                        ? "RecoverLabelZpl"
-                        : "RecoverLabel",
+                          ? "RecoverLabelZpl"
+                          : "RecoverLabel",
             },
             {
                 transaction_id,
                 payment_id: options?.payment_id,
                 weight_unit: options?.weight_unit,
-                as_data_uri: options?.as_data_uri,
-            }
-    )) as { recover_label: DomesticLabelInterface<Format> };
+                as_data_url: options?.as_data_url,
+            },
+        )) as { recover_label: DomesticLabelInterface<Format> };
 
         return new DomesticLabel(recover_label);
     }

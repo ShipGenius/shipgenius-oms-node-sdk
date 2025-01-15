@@ -1324,14 +1324,12 @@ describe("ShipGeniusOmsClient.subscribeToTrackingUpdates", () => {
 });
 
 describe("ShipGeniusOmsClient.recoverLabel", () => {
-
     let original_fetch = globalThis.fetch;
     afterEach(() => {
         globalThis.fetch = original_fetch;
     });
 
     it("recovers labels (default params)", async () => {
-
         let fetch_expectations_passed = false;
 
         global.fetch = jest.fn().mockImplementation(async (url: string, args: RequestInit) => {
@@ -1358,7 +1356,7 @@ describe("ShipGeniusOmsClient.recoverLabel", () => {
 
             return {
                 ok: true,
-                json: async (): Promise<{data: { recover_label: DomesticLabelInterface<LabelFormat.NONE> }}>  => ({
+                json: async (): Promise<{ data: { recover_label: DomesticLabelInterface<LabelFormat.NONE> } }> => ({
                     data: {
                         recover_label: {
                             transaction_id: "28396004-65f3-4d6f-833a-d31e25e5cd41",
@@ -1379,7 +1377,7 @@ describe("ShipGeniusOmsClient.recoverLabel", () => {
                             base_price: "10.00",
                             total_price: "12.95",
                             billing_weight: 5,
-                            label: null
+                            label: null,
                         },
                     },
                 }),
@@ -1396,7 +1394,6 @@ describe("ShipGeniusOmsClient.recoverLabel", () => {
     });
 
     it("recovers labels (png)", async () => {
-
         let fetch_expectations_passed = false;
 
         global.fetch = jest.fn().mockImplementation(async (url: string, args: RequestInit) => {
@@ -1409,9 +1406,9 @@ describe("ShipGeniusOmsClient.recoverLabel", () => {
                     documentId: "RecoverLabelPng",
                     variables: {
                         transaction_id: "28396004-65f3-4d6f-833a-d31e25e5cd41",
-                        "as_data_uri": true,
-                        "payment_id": "1b466f32-3a33-4e16-a29d-34e12f023ea7",
-                        "weight_unit": WeightUnit.KG,
+                        as_data_url: true,
+                        payment_id: "1b466f32-3a33-4e16-a29d-34e12f023ea7",
+                        weight_unit: WeightUnit.KG,
                     },
                 },
                 headers: {
@@ -1426,7 +1423,7 @@ describe("ShipGeniusOmsClient.recoverLabel", () => {
 
             return {
                 ok: true,
-                json: async (): Promise<{data: { recover_label: DomesticLabelInterface<LabelFormat.PNG> }}>  => ({
+                json: async (): Promise<{ data: { recover_label: DomesticLabelInterface<LabelFormat.PNG> } }> => ({
                     data: {
                         recover_label: {
                             transaction_id: "28396004-65f3-4d6f-833a-d31e25e5cd41",
@@ -1452,9 +1449,9 @@ describe("ShipGeniusOmsClient.recoverLabel", () => {
                                 png: {
                                     mime_type: "image/png",
                                     url: "https://test/image.png",
-                                    base64_encoded: "data:image/png;base64,abcd"
+                                    base64_encoded: "data:image/png;base64,abcd",
                                 },
-                            }
+                            },
                         },
                     },
                 }),
@@ -1463,15 +1460,12 @@ describe("ShipGeniusOmsClient.recoverLabel", () => {
 
         const client = new ShipGeniusOmsClient("def456", { url: "https://api.test" });
 
-        const response = await client.recoverLabel(
-            "28396004-65f3-4d6f-833a-d31e25e5cd41",
-            {
-                "as_data_uri": true,
-                "format": LabelFormat.PNG,
-                "payment_id": "1b466f32-3a33-4e16-a29d-34e12f023ea7",
-                "weight_unit": WeightUnit.KG,
-            }
-        );
+        const response = await client.recoverLabel("28396004-65f3-4d6f-833a-d31e25e5cd41", {
+            as_data_url: true,
+            format: LabelFormat.PNG,
+            payment_id: "1b466f32-3a33-4e16-a29d-34e12f023ea7",
+            weight_unit: WeightUnit.KG,
+        });
         expect(response).toBeInstanceOf(DomesticLabel);
         expect(response.label.png.mime_type).toBe("image/png");
 
@@ -1479,7 +1473,6 @@ describe("ShipGeniusOmsClient.recoverLabel", () => {
     });
 
     it("recovers labels (zpl)", async () => {
-
         let fetch_expectations_passed = false;
 
         global.fetch = jest.fn().mockImplementation(async (url: string, args: RequestInit) => {
@@ -1492,9 +1485,9 @@ describe("ShipGeniusOmsClient.recoverLabel", () => {
                     documentId: "RecoverLabelZpl",
                     variables: {
                         transaction_id: "28396004-65f3-4d6f-833a-d31e25e5cd41",
-                        "as_data_uri": true,
-                        "payment_id": "1b466f32-3a33-4e16-a29d-34e12f023ea7",
-                        "weight_unit": WeightUnit.KG,
+                        as_data_url: true,
+                        payment_id: "1b466f32-3a33-4e16-a29d-34e12f023ea7",
+                        weight_unit: WeightUnit.KG,
                     },
                 },
                 headers: {
@@ -1509,7 +1502,7 @@ describe("ShipGeniusOmsClient.recoverLabel", () => {
 
             return {
                 ok: true,
-                json: async (): Promise<{data: { recover_label: DomesticLabelInterface<LabelFormat.ZPL> }}>  => ({
+                json: async (): Promise<{ data: { recover_label: DomesticLabelInterface<LabelFormat.ZPL> } }> => ({
                     data: {
                         recover_label: {
                             transaction_id: "28396004-65f3-4d6f-833a-d31e25e5cd41",
@@ -1535,9 +1528,9 @@ describe("ShipGeniusOmsClient.recoverLabel", () => {
                                 zpl: {
                                     mime_type: "application/zpl",
                                     url: "https://test/image.zpl",
-                                    base64_encoded: "data:application/zpl;base64,abcd"
+                                    base64_encoded: "data:application/zpl;base64,abcd",
                                 },
-                            }
+                            },
                         },
                     },
                 }),
@@ -1546,18 +1539,15 @@ describe("ShipGeniusOmsClient.recoverLabel", () => {
 
         const client = new ShipGeniusOmsClient("def456", { url: "https://api.test" });
 
-        const response = await client.recoverLabel(
-            "28396004-65f3-4d6f-833a-d31e25e5cd41",
-            {
-                "as_data_uri": true,
-                "format": LabelFormat.ZPL,
-                "payment_id": "1b466f32-3a33-4e16-a29d-34e12f023ea7",
-                "weight_unit": WeightUnit.KG,
-            }
-        );
+        const response = await client.recoverLabel("28396004-65f3-4d6f-833a-d31e25e5cd41", {
+            as_data_url: true,
+            format: LabelFormat.ZPL,
+            payment_id: "1b466f32-3a33-4e16-a29d-34e12f023ea7",
+            weight_unit: WeightUnit.KG,
+        });
         expect(response).toBeInstanceOf(DomesticLabel);
         expect(response.label.zpl.mime_type).toBe("application/zpl");
 
         expect(fetch_expectations_passed).toBe(true);
     });
-})
+});
