@@ -8,24 +8,24 @@ import RateClass from "./rate-class.js";
  */
 export interface DomesticRateResponseInterface {
     /** Typename that can be used as an alternative to `instanceof` for type guards */
-    __typename: "DomesticRateError" | "DomesticRate";
+    readonly __typename: "DomesticRateError" | "DomesticRate";
     /** The carrier requests */
-    carrier: CarrierName;
+    readonly carrier: CarrierName;
     /** The class of rates requests */
-    requested_rate_class: RateClass;
+    readonly requested_rate_class: RateClass;
     /** The service code requested. */
-    service_code: string;
+    readonly service_code: string;
     /** The account number used for the request */
-    account_number: string | null;
+    readonly account_number: string | null;
 }
 
 /** Base class for returned rates */
 export default class DomesticRateResponse implements DomesticRateResponseInterface {
-    public __typename: "DomesticRateError" | "DomesticRate";
-    public carrier: CarrierName;
-    public requested_rate_class: RateClass;
-    public service_code: string;
-    public account_number: string | null;
+    public readonly __typename: "DomesticRateError" | "DomesticRate";
+    public readonly carrier: CarrierName;
+    public readonly requested_rate_class: RateClass;
+    public readonly service_code: string;
+    public readonly account_number: string | null;
 
     /** @hidden */
     constructor(data: DomesticRateResponseInterface) {

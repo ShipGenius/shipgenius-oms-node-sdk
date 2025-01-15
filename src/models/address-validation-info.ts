@@ -9,24 +9,24 @@ import DomesticAddress, { DomesticAddressInterface } from "./domestic-address.js
  * @internal
  */
 export interface AddressValidationInfoInterface extends AddressValidationResponseInterface {
-    __typename: "AddressValidationInfo";
+    readonly __typename: "AddressValidationInfo";
     /** A list of warnings and corrections to the address, sorted from most critical to least critical */
-    warnings: readonly AddressValidationNoteInterface[];
+    readonly warnings: readonly AddressValidationNoteInterface[];
     /** The address as corrected by USPS */
-    normalized_address: DomesticAddressInterface;
+    readonly normalized_address: DomesticAddressInterface;
     /** The original address entered by the user */
-    original_address: DomesticAddressInterface;
+    readonly original_address: DomesticAddressInterface;
     /** Additional information about the address, mostly concerning its validity */
-    additional: AdditionalAddressInformationInterface;
+    readonly additional: AdditionalAddressInformationInterface;
 }
 
 /** Informatin about a successful address validation */
 export default class AddressValidationInfo extends AddressValidationResponse implements AddressValidationInfoInterface {
-    public __typename = "AddressValidationInfo" as const;
-    public warnings: readonly AddressValidationNote[];
-    public normalized_address: DomesticAddress;
-    public original_address: DomesticAddress;
-    public additional: AdditionalAddressInformation;
+    public readonly __typename = "AddressValidationInfo" as const;
+    public readonly warnings: readonly AddressValidationNote[];
+    public readonly normalized_address: DomesticAddress;
+    public readonly original_address: DomesticAddress;
+    public readonly additional: AdditionalAddressInformation;
 
     /** @hidden */
     constructor(data: AddressValidationInfoInterface) {

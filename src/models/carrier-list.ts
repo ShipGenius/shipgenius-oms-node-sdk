@@ -7,7 +7,7 @@ import Carrier, { CarrierInterface } from "./carrier.js";
  */
 export interface CarrierListInterface {
     /** The list of carriers returned */
-    carriers: readonly CarrierInterface[];
+    readonly carriers: readonly CarrierInterface[];
 }
 
 /**
@@ -16,7 +16,7 @@ export interface CarrierListInterface {
  * This is a class in case extra metadata fields are added later
  */
 export default class CarrierList implements CarrierListInterface {
-    public carriers: readonly Carrier[];
+    public readonly carriers: readonly Carrier[];
 
     /** @hidden */
     constructor({ carriers }: CarrierListInterface) {

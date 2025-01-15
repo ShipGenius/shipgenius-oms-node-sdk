@@ -6,6 +6,8 @@ import CarrierService from "../models/carrier-service";
 import LengthUnit from "../models/length-unit";
 import RateClass from "../models/rate-class";
 import StateCode from "../models/state-code";
+import { TrackingEventInterface } from "../models/tracking-event";
+import TrackingInformation, { TrackingInformationInterface } from "../models/tracking-information";
 import WeightUnit from "../models/weight-unit";
 import ShipGeniusOmsClient from "./client";
 import { GraphqlError, HttpError, ServerEnvironment } from "./client-types";
@@ -1017,5 +1019,117 @@ describe("ShipGeniusOmsClient", () => {
             ],
             request_id: "1234",
         });
+    });
+
+    it("gets tracking information", async () => {
+        let fetch_expectations_passed = false;
+        global.fetch = jest.fn().mockImplementation(async (url: string, args: RequestInit) => {
+            expect(url).toBe("https://api.test/graphql");
+            expect({
+                ...args,
+                body: JSON.parse(args.body as string),
+            }).toEqual({
+                body: {
+                    documentId: "GetTracking",
+                    variables: {
+                        label_info: {
+                            carrier: "UPS",
+                            account_number: "abc123",
+                            shipment: {
+                                labelgenius_id: "789",
+                            },
+                        },
+                    },
+                },
+                headers: {
+                    Accept: "application/graphql-response+json",
+                    Authorization: "Bearer def456",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+            });
+
+            fetch_expectations_passed = true;
+
+            return {
+                ok: true,
+                json: async () => {
+                    return {
+                        data: {
+                            get_tracking: {
+                                shipment_info: {
+                                    tracking_number: "abc123",
+                                    unique_tracking_number: null,
+                                    carrier: CarrierName.UPS,
+                                    ship_time: null,
+                                    origin: {
+                                        address: {
+                                            street: null,
+                                            city: null,
+                                            state_or_province_code: null,
+                                            postal_code: null,
+                                            country_code: null,
+                                            urbanization_code: null,
+                                            residential: null,
+                                        },
+                                        contacts: null,
+                                    },
+                                    destination: {
+                                        address: {
+                                            street: null,
+                                            city: null,
+                                            state_or_province_code: null,
+                                            postal_code: null,
+                                            country_code: null,
+                                            urbanization_code: null,
+                                            residential: null,
+                                        },
+                                        contacts: null,
+                                    },
+                                },
+                                delivery: {
+                                    signed_by: null,
+                                    received_by: null,
+                                    delivery_time: null,
+                                    delivery_attempt_time: null,
+                                    delivery_location: null,
+                                },
+                                schedule: {
+                                    expected_delivery: null,
+                                    delivery_window: null,
+                                    on_time: null,
+                                },
+                                notices: [],
+                                last_updated: "2025-01-15T12:34:56Z",
+                                last_known_location: {
+                                    street: null,
+                                    city: null,
+                                    state_or_province_code: null,
+                                    postal_code: null,
+                                    country_code: null,
+                                    urbanization_code: null,
+                                    residential: null,
+                                },
+                                event_history: [],
+                                carrier_specific: {},
+                            },
+                        },
+                    };
+                },
+            };
+        });
+
+        const client = new ShipGeniusOmsClient("def456", { url: "https://api.test" });
+
+        const response = await client.getTrackingInformation({
+            carrier: CarrierName.UPS,
+            account_number: "abc123",
+            shipment: {
+                labelgenius_id: "789",
+            },
+        });
+
+        expect(response).toBeInstanceOf(TrackingInformation);
+        expect(response.last_updated).toEqual("2025-01-15T12:34:56Z");
     });
 });

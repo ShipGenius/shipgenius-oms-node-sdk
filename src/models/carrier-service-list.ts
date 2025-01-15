@@ -7,7 +7,7 @@ import CarrierService, { CarrierServiceInterface } from "./carrier-service.js";
  */
 export interface CarrierServiceListInterface {
     /** The list of carrier services returned */
-    services: readonly CarrierServiceInterface[];
+    readonly services: readonly CarrierServiceInterface[];
 }
 
 /**
@@ -16,7 +16,7 @@ export interface CarrierServiceListInterface {
  * This is a class in case extra metadata fields are added later
  */
 export default class CarrierServiceList implements CarrierServiceListInterface {
-    public services: readonly CarrierService[];
+    public readonly services: readonly CarrierService[];
 
     /** @hidden */
     constructor({ services }: CarrierServiceListInterface) {

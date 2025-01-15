@@ -13,17 +13,17 @@ export interface DomesticRateQueryResponse {
  */
 export interface BulkDomesticRateResponseInterface {
     /** Echoed back from {@link DomesticRateInput.request_id} */
-    request_id: string | null;
+    readonly request_id: string | null;
     /** The rates for this package */
-    rates: readonly DomesticRateResponseInterface[];
+    readonly rates: readonly DomesticRateResponseInterface[];
 }
 
 /**
  * Rate information returned for a rated package
  */
 export default class BulkDomesticRateResponse implements BulkDomesticRateResponseInterface {
-    public request_id: string | null;
-    public rates: readonly DomesticRateResponse[];
+    public readonly request_id: string | null;
+    public readonly rates: readonly DomesticRateResponse[];
 
     /** @hidden */
     constructor(data: BulkDomesticRateResponseInterface) {

@@ -1,18 +1,18 @@
-const DATE_MATCHER = /(\d{4})-(\d{2})-(\d{2})/;
+const DATE_MATCHER = /^(\d{4})-(\d{2})-(\d{2})/; // no `$` so we can handle a datetime string
 
 /** The fields of a date */
 export interface DateFields {
     /** full year */
-    year: number;
+    readonly year: number;
     /** 1-12 month number */
-    month: number;
+    readonly month: number;
     /** 1-31 day-of-month number */
-    day: number;
+    readonly day: number;
 }
 
 /** Different representations of a date */
 export class DateInformation {
-    private _date_fields: DateFields;
+    private readonly _date_fields: DateFields;
 
     /** The date as an ISO (yyyy-mm-dd) string */
     public get iso_date_string() {
@@ -48,30 +48,24 @@ export class DateInformation {
      * > If you are using this in an environment where {@link https://tc39.es/proposal-temporal/docs | Temporal} is not in `globalThis`, it *will* just crash.
      * >
      *
-     * > [!TIP]
-     * > The Typescript return type for this is currently {@link DateFields}.
-     * > This is technically correct, as Temporal.PlainDate *is* a subset of that type.
-     * >
-     * > You can safely assert that it is a Temporal.PlainDate:
-     * > ```typescript
-     * > (date_information.temporal as Temporal.PlainDate).monthCode
-     * > ```
-     * >
-     * > The marked return type will be updated as soon as Temporal is baseline available.
-     *
      * @returns {@link https://tc39.es/proposal-temporal/docs/plaindate.html | Temporal.PlainDate}
      */
-    public get temporal() {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    public get temporal(): Temporal.PlainDate {
         // TODO this can be simplified a lot once Temporal is available
 
         if ("Temporal" in globalThis) {
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-return
             return (
                 globalThis as unknown as {
                     // eslint-disable-next-line @typescript-eslint/naming-convention
                     Temporal: {
                         // eslint-disable-next-line @typescript-eslint/naming-convention
                         PlainDate: {
-                            from: (item: string) => DateFields;
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
+                            from: (item: string) => Temporal.PlainDate;
                         };
                     };
                 }

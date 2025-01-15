@@ -7,17 +7,17 @@ import DomesticRateResponse, { DomesticRateResponseInterface } from "./domestic-
  * @internal
  */
 export interface DomesticRateErrorInterface extends DomesticRateResponseInterface {
-    __typename: "DomesticRateError";
+    readonly __typename: "DomesticRateError";
     /** The code associated with the error. Can be used to direct error-handling logic. */
-    code: CarrierErrorCode;
+    readonly code: CarrierErrorCode;
     /** The human-readable error message, if applicable. */
-    message: string | null;
+    readonly message: string | null;
 }
 
 export default class DomesticRateError extends DomesticRateResponse implements DomesticRateErrorInterface {
-    public __typename = "DomesticRateError" as const;
-    public code: CarrierErrorCode;
-    public message: string | null;
+    public readonly __typename = "DomesticRateError" as const;
+    public readonly code: CarrierErrorCode;
+    public readonly message: string | null;
 
     /** @hidden */
     constructor(data: DomesticRateErrorInterface) {

@@ -12,6 +12,8 @@ import BulkDomesticRateResponse, { DomesticRateQueryResponse } from "../models/b
 import WeightUnit from "../models/weight-unit.js";
 import CarrierServiceRateInput from "../models/carrier-service-rate-input.js";
 import DomesticRateInput from "../models/domestic-rate-input.js";
+import FullShipmentIdentifier from "../models/full-shipment-identifier.js";
+import TrackingInformation, { GetTrackingQueryResponse } from "../models/tracking-information.js";
 
 /**
  * A client for connecting to the ShipGenius OMS API
@@ -369,5 +371,26 @@ export default class ShipGeniusOmsClient {
         )) as DomesticRateQueryResponse;
 
         return domestic_rate.map((shipment) => new BulkDomesticRateResponse(shipment));
+    }
+
+    /**
+     * Get tracking information for a shipped package
+     *
+     * @param label_info The label to get tracking information for
+     *
+     * @returns Information about the shipment of the package
+     *
+     * @throws {@link client.HttpError} if the response is not `ok`
+     * @throws {@link client.GraphqlError} if the response contains an `errors` key
+     */
+    public async getTrackingInformation(label_info: FullShipmentIdentifier) {
+        const { get_tracking } = (await this.makeGqlRequest(
+            { document: "GetTracking" },
+            {
+                label_info,
+            },
+        )) as GetTrackingQueryResponse;
+
+        return new TrackingInformation(get_tracking);
     }
 }

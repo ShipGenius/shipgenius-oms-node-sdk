@@ -11,36 +11,36 @@ import RateClass from "./rate-class.js";
  * @internal
  */
 export interface DomesticRateInterface extends DomesticRateResponseInterface {
-    __typename: "DomesticRate";
+    readonly __typename: "DomesticRate";
 
     /**
      * An id that can be used to select this rate for a shipment of the same package
      *
      * Only populated if `save_rates` was specified in rate request
      */
-    rate_id: string | null;
+    readonly rate_id: string | null;
 
     /** A list of warnings for details that might affect the final rate */
-    warnings: readonly CarrierWarningInterface[];
+    readonly warnings: readonly CarrierWarningInterface[];
     /** A list of disclaimers to be shown to the end-user */
-    disclaimers: readonly string[];
+    readonly disclaimers: readonly string[];
     /** The actual class of rate returned by the carrier */
-    actual_rate_class: RateClass;
+    readonly actual_rate_class: RateClass;
     /**
      * The amount that would be charged to your account if shipping this package with this rate
      *
      * > [!IMPORTANT]
      * > If paying with a card, use {@link labelgenius_charge_with_card_fee} instead
      */
-    labelgenius_charge: `${number}`;
+    readonly labelgenius_charge: `${number}`;
     /** Same as {@link labelgenius_charge} but if the payment is made with a card */
-    labelgenius_charge_with_card_fee: `${number}`;
+    readonly labelgenius_charge_with_card_fee: `${number}`;
     /** The base price for this option before extras. */
-    base_price: `${number}`;
+    readonly base_price: `${number}`;
     /** The total price for this option after extras. */
-    total_price: `${number}`;
+    readonly total_price: `${number}`;
     /** An itemized list of charges for this option */
-    itemized_charges: readonly ItemizedChargeInterface[];
+    readonly itemized_charges: readonly ItemizedChargeInterface[];
     /**
      * When the package is estimated to arrive at its destination.
      *
@@ -48,34 +48,34 @@ export interface DomesticRateInterface extends DomesticRateResponseInterface {
      * > This field is an ISO date string string.
      * > See {@link DomesticRate.estimated_delivery_date} value in other representations
      */
-    estimated_delivery: string | null;
+    readonly estimated_delivery: string | null;
     /** Whether the carrier has a guarantee regarding the delivery time. */
-    guaranteed_delivery: boolean | null;
+    readonly guaranteed_delivery: boolean | null;
     /**
      * The billing weight of the package; either the actual weight or dimensional weight as calculated by the carrier.
      *
      * Returned in the units requested (LBS by default)
      */
-    billing_weight: number;
+    readonly billing_weight: number;
     /** Extra information returned by specific carriers */
-    carrier_specific: JsonObject;
+    readonly carrier_specific: JsonObject;
 }
 
 export default class DomesticRate extends DomesticRateResponse implements DomesticRateInterface {
-    public __typename = "DomesticRate" as const;
-    public rate_id: string | null;
-    public warnings: readonly CarrierWarning[];
-    public disclaimers: readonly string[];
-    public actual_rate_class: RateClass;
-    public labelgenius_charge: `${number}`;
-    public labelgenius_charge_with_card_fee: `${number}`;
-    public base_price: `${number}`;
-    public total_price: `${number}`;
-    public itemized_charges: readonly ItemizedCharge[];
-    public estimated_delivery: string | null;
-    public guaranteed_delivery: boolean | null;
-    public billing_weight: number;
-    public carrier_specific: JsonObject;
+    public readonly __typename = "DomesticRate" as const;
+    public readonly rate_id: string | null;
+    public readonly warnings: readonly CarrierWarning[];
+    public readonly disclaimers: readonly string[];
+    public readonly actual_rate_class: RateClass;
+    public readonly labelgenius_charge: `${number}`;
+    public readonly labelgenius_charge_with_card_fee: `${number}`;
+    public readonly base_price: `${number}`;
+    public readonly total_price: `${number}`;
+    public readonly itemized_charges: readonly ItemizedCharge[];
+    public readonly estimated_delivery: string | null;
+    public readonly guaranteed_delivery: boolean | null;
+    public readonly billing_weight: number;
+    public readonly carrier_specific: JsonObject;
 
     /** @hidden */
     constructor(data: DomesticRateInterface) {

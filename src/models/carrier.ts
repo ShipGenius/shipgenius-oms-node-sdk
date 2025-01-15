@@ -18,18 +18,18 @@ export enum CarrierName {
  */
 export interface CarrierInterface {
     /** The carrier's id in the Shipgenius OMS database */
-    id: string;
+    readonly id: string;
     /** The carrier's name */
-    name: CarrierName;
+    readonly name: CarrierName;
     /** A brief description of the carrier */
-    description: string | null;
+    readonly description: string | null;
 }
 
 /** A mail carrier */
 export default class Carrier implements CarrierInterface {
-    public id: string;
-    public name: CarrierName;
-    public description: string | null;
+    public readonly id: string;
+    public readonly name: CarrierName;
+    public readonly description: string | null;
 
     /** @hidden */
     constructor(data: CarrierInterface) {

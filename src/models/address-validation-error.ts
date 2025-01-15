@@ -7,18 +7,18 @@ import CarrierErrorCode from "./carrier-error-code.js";
  * @internal
  */
 export interface AddressValidationErrorInterface extends AddressValidationResponseInterface {
-    __typename: "AddressValidationError";
+    readonly __typename: "AddressValidationError";
     /** The error code for the error */
-    error_code: CarrierErrorCode;
+    readonly error_code: CarrierErrorCode;
     /** The human-readable error message, if available */
-    error_message: string | null;
+    readonly error_message: string | null;
 }
 
 /** Information about why an address validation failed to run */
 export default class AddressValidationError extends AddressValidationResponse implements AddressValidationErrorInterface {
-    public __typename = "AddressValidationError" as const;
-    public error_code: CarrierErrorCode;
-    public error_message: string | null;
+    public readonly __typename = "AddressValidationError" as const;
+    public readonly error_code: CarrierErrorCode;
+    public readonly error_message: string | null;
 
     /** @hidden */
     constructor(data: AddressValidationErrorInterface) {

@@ -26,6 +26,16 @@ export { default as DomesticRateError } from "./domestic-rate-error.js";
 export { default as DomesticRateResponse } from "./domestic-rate-response.js";
 export { default as DomesticRate } from "./domestic-rate.js";
 export { default as ItemizedCharge } from "./itemized-charge.js";
+export { default as TrackingInformation } from "./tracking-information.js";
+export { default as TrackingShipment } from "./tracking-shipment.js";
+export { default as TrackingDeliveryInformation } from "./tracking-delivery-information.js";
+export { default as DeliverySchedule } from "./delivery-schedule.js";
+export { default as TrackingAddress } from "./tracking-address.js";
+export { default as TrackingEvent } from "./tracking-event.js";
+export { default as TrackingAddressAndContact } from "./tracking-address-and-contact.js";
+export { default as TrackingContactInfo } from "./tracking-contact-info.js";
+export { default as DeliveryWindow } from "./delivery-window.js";
+export { default as TrackingStatus } from "./tracking-status.js";
 
 // GraphQL type interfaces
 export type { AdditionalAddressInformationInterface } from "./additional-address-information.js";
@@ -45,6 +55,16 @@ export type { DomesticRateErrorInterface } from "./domestic-rate-error.js";
 export type { DomesticRateResponseInterface } from "./domestic-rate-response.js";
 export type { DomesticRateInterface } from "./domestic-rate.js";
 export type { ItemizedChargeInterface } from "./itemized-charge.js";
+export type { TrackingInformationInterface } from "./tracking-information.js";
+export type { TrackingShipmentInterface } from "./tracking-shipment.js";
+export type { TrackingDeliveryInformationInterface } from "./tracking-delivery-information.js";
+export type { DeliveryScheduleInterface } from "./delivery-schedule.js";
+export type { TrackingAddressInterface } from "./tracking-address.js";
+export type { TrackingEventInterface } from "./tracking-event.js";
+export type { TrackingAddressAndContactInterface } from "./tracking-address-and-contact.js";
+export type { TrackingContactInfoInterface } from "./tracking-contact-info.js";
+export type { DeliveryWindowInterface } from "./delivery-window.js";
+export type { TrackingStatusInterface } from "./tracking-status.js";
 
 // GraphQL inputs
 export type { default as AdditionalDomesticInfoInput } from "./additional-domestic-info-input.js";
@@ -100,9 +120,11 @@ export type {
 } from "./extra-service.js";
 export type { default as FullContactInformation } from "./full-contact-information.js";
 export type { default as FullDomesticAddressInput } from "./full-domestic-address-input.js";
+export type { default as FullShipmentIdentifier } from "./full-shipment-identifier.js";
 export type { default as LabelCarrierInput, UspsLabelInput, FedExLabelInput } from "./label-carrier-input.js";
 export type { default as LengthInput } from "./length-input.js";
 export type { default as Packaging, PackagingOption, BoxDimensions, BagDimensions, CarrierSpecificPackaging } from "./packaging.js";
+export type { default as ShipmentIdentifier, ShipmentIdentifierOption } from "./shipment-identifier.js";
 export type { default as WeightInput } from "./weight-input.js";
 
 // GraphQL enums
@@ -128,7 +150,10 @@ export { UspsProcessingCategory, FedexPickupType } from "./label-carrier-input.j
 export { default as MessageSeverity } from "./message-severity.js";
 export { default as StateCode } from "./state-code.js";
 export { default as WeightUnit } from "./weight-unit.js";
+export { default as TrackingStatusCode } from "./tracking-status-code.js";
 
 // Scalar info
 export { DateInformation } from "./date.js";
 export type { DateFields } from "./date.js";
+export { DatetimeInformation } from "./date-time.js";
+export type { DatetimeFields } from "./date-time.js";

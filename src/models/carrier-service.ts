@@ -17,31 +17,31 @@ export enum ShippingRegionType {
  */
 export interface CarrierServiceInterface {
     /** The service's id the the Shipgenius OMS database */
-    id: string;
+    readonly id: string;
     /** The user-facing name of the service */
-    name: string;
+    readonly name: string;
     /** The code used to specify the service when rating and shippiong */
-    code: string;
+    readonly code: string;
     /** Whether retail (non-business) accounts can use the service */
-    enabled_for_retail_user: boolean;
+    readonly enabled_for_retail_user: boolean;
     /** The destinations the service handles */
-    shipping_region_type: ShippingRegionType;
+    readonly shipping_region_type: ShippingRegionType;
     /** A brief description of the service */
-    description: string | null;
+    readonly description: string | null;
 
     /** Information about the carrier that offers the service */
-    carrier: Carrier | null;
+    readonly carrier: Carrier | null;
 }
 
 /** A supported shipping service */
 export default class CarrierService implements CarrierServiceInterface {
-    public id: string;
-    public name: string;
-    public code: string;
-    public enabled_for_retail_user: boolean;
-    public shipping_region_type: ShippingRegionType;
-    public description: string | null;
-    public carrier: Carrier | null;
+    public readonly id: string;
+    public readonly name: string;
+    public readonly code: string;
+    public readonly enabled_for_retail_user: boolean;
+    public readonly shipping_region_type: ShippingRegionType;
+    public readonly description: string | null;
+    public readonly carrier: Carrier | null;
 
     /** @hidden */
     constructor(data: CarrierServiceInterface) {

@@ -67,9 +67,7 @@ export interface ShipGeniusOmsClientConstructorOptions {
 }
 
 /** Standard fetch Response object with some fields removed  */
-export type StrippedResponse = Omit<Response, "body" | "bodyUsed" | "arrayBuffer" | "blob" | "formData" | "bytes" | "clone"> & {
-    clone: () => StrippedResponse;
-};
+export type StrippedResponse = Omit<Response, "body" | "bodyUsed" | "arrayBuffer" | "blob" | "formData" | "bytes" | "clone">;
 
 /** An error occuring from a non-ok HTTP response */
 export class HttpError extends Error {
@@ -97,7 +95,7 @@ export class HttpError extends Error {
             status: this._response.status,
             statusText: this._response.statusText,
             url: this._response.url,
-            clone: this._response.clone,
+            // clone: this._response.clone,
 
             json: async () => {
                 if (this._parsed_json === undefined) {

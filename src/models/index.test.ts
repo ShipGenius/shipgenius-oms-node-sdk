@@ -38,6 +38,18 @@ import {
     RateClass,
     LengthUnit,
     UspsTrackingPlusOption,
+    TrackingInformation,
+    DatetimeInformation,
+    TrackingShipment,
+    TrackingDeliveryInformation,
+    DeliverySchedule,
+    TrackingAddress,
+    TrackingEvent,
+    TrackingAddressAndContact,
+    DeliveryWindow,
+    TrackingStatus,
+    TrackingStatusCode,
+    TrackingContactInfo,
 } from "./index";
 
 describe("@shipgenius/oms/models", () => {
@@ -60,6 +72,16 @@ describe("@shipgenius/oms/models", () => {
         expect(DomesticRateResponse).toBeDefined();
         expect(DomesticRate).toBeDefined();
         expect(ItemizedCharge).toBeDefined();
+        expect(TrackingInformation).toBeDefined();
+        expect(TrackingShipment).toBeDefined();
+        expect(TrackingDeliveryInformation).toBeDefined();
+        expect(DeliverySchedule).toBeDefined();
+        expect(TrackingAddress).toBeDefined();
+        expect(TrackingEvent).toBeDefined();
+        expect(TrackingAddressAndContact).toBeDefined();
+        expect(DeliveryWindow).toBeDefined();
+        expect(TrackingStatus).toBeDefined();
+        expect(TrackingContactInfo).toBeDefined();
 
         // Enums
         expect(CarrierErrorCode).toBeDefined();
@@ -83,8 +105,10 @@ describe("@shipgenius/oms/models", () => {
         expect(MessageSeverity).toBeDefined();
         expect(StateCode).toBeDefined();
         expect(WeightUnit).toBeDefined();
+        expect(TrackingStatusCode).toBeDefined();
 
         // Scalars
         expect(DateInformation).toBeDefined();
+        expect(DatetimeInformation).toBeDefined();
     });
 });

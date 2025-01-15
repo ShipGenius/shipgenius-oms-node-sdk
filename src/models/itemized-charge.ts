@@ -35,21 +35,21 @@ export enum ChargeType {
  */
 export interface ItemizedChargeInterface {
     /** The type of reason given for an itemized charge */
-    code: ChargeType;
+    readonly code: ChargeType;
     /** The code the carrier uses to represent the charge type, if applicable */
-    carrier_charge_code: string | null;
+    readonly carrier_charge_code: string | null;
     /** The carrier's description of the charge, if applicable */
-    carrier_charge_description: string | null;
+    readonly carrier_charge_description: string | null;
     /** The amount of the charge as a Decimal */
-    charge_amount: `${number}`;
+    readonly charge_amount: `${number}`;
 }
 
 /** A line item on a list of itemized charges */
 export default class ItemizedCharge implements ItemizedChargeInterface {
-    public code: ChargeType;
-    public carrier_charge_code: string | null;
-    public carrier_charge_description: string | null;
-    public charge_amount: `${number}`;
+    public readonly code: ChargeType;
+    public readonly carrier_charge_code: string | null;
+    public readonly carrier_charge_description: string | null;
+    public readonly charge_amount: `${number}`;
 
     /** @hidden */
     constructor(data: ItemizedChargeInterface) {

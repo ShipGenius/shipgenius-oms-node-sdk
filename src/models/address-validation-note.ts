@@ -13,15 +13,15 @@ export interface AddressValidationNoteInterface {
      * - {@link MessageSeverity.WARNING | `WARNING`} = The address was corrected.
      * - {@link MessageSeverity.NOTE | `NOTE`} = Information was added to the address
      */
-    severity: MessageSeverity;
+    readonly severity: MessageSeverity;
     /** A human-readable explanation of the correction */
-    message: string;
+    readonly message: string;
 }
 
 /** A note or warning about the address validation */
 export default class AddressValidationNote implements AddressValidationNoteInterface {
-    public severity: MessageSeverity;
-    public message: string;
+    public readonly severity: MessageSeverity;
+    public readonly message: string;
 
     /** @hidden */
     constructor(data: AddressValidationNoteInterface) {

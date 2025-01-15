@@ -12,9 +12,6 @@ const basic_data: StrippedResponse = {
     statusText: "Bad Request",
     type: "basic",
     url: "http://test/bad",
-    clone: function (): StrippedResponse {
-        return this;
-    },
     json: async function (): Promise<any> {
         return { detail: "error message" };
     },

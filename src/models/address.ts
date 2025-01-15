@@ -5,15 +5,15 @@
  */
 export interface AddressInterface {
     /** The street address */
-    street: readonly string[];
+    readonly street: readonly string[];
     /** The city the address is in */
-    city: string;
+    readonly city: string;
 }
 
 /** An address returned by the API */
 export default class Address implements AddressInterface {
-    public street: readonly string[];
-    public city: string;
+    public readonly street: readonly string[];
+    public readonly city: string;
 
     /** @hidden */
     constructor(data: AddressInterface) {
