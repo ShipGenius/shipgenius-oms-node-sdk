@@ -16,7 +16,13 @@ export default [
         languageOptions: {
             parserOptions: {
                 projectService: {
-                    allowDefaultProject: ["*.js", "*.mjs", "*.cjs", "*.cts"]
+                    allowDefaultProject: [
+                        "*.js",
+                        "*.mjs",
+                        "*.cjs",
+                        "*.cts",
+                        "eslint-plugins/*/index.js",
+                    ]
                 },
                 tsconfigRootDir: import.meta.dirname,
                 

@@ -17,9 +17,9 @@
     "scripts": {
         "test": "jest",
         "build": "rm -rf ./dist; tsc",
-        "format": "prettier --write \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
-        "check-format": "prettier --check \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
-        "lint": "eslint src/",
+        "format": "prettier --write \"{src,test,eslint-plugins}/**/*.{js,jsx,ts,tsx}\"",
+        "check-format": "prettier --check \"{src,test,eslint-plugins}/**/*.{js,jsx,ts,tsx}\"",
+        "lint": "eslint src/ eslint-plugins/",
         "coverage": "jest --coverage src/; open ./coverage/lcov-report/index.html",
         "cicd-coverage-report": "jest --coverage --coverageReporters json-summary src/",
         "build-docs": "typedoc",
