@@ -2,7 +2,18 @@
     "name": "@shipgenius/oms",
     "version": "1.0.0",
     "type": "module",
-    "description": "SDK for the Shipgenius Order Mangement System",
+    "description": "NOT READY! Shipgenius OMS is launching soon, but is currently not ready.\n\nSDK for the Shipgenius Order Mangement System",
+    "keywords": [
+        "SDK",
+        "Shipgenius",
+        "Shipping",
+        "OMS"
+    ],
+    "homepage": "https://shipgenius.github.io/shipgenius-oms-node-sdk/",
+    "bugs": {
+        "email": "info@shipgeni.us",
+        "url": "https://github.com/ShipGenius/shipgenius-oms-node-sdk/issues"
+    },
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "exports": {
@@ -26,8 +37,12 @@
         "watch-docs": "typedoc --watch",
         "check-docs": "typedoc --emit none 2>&1 | sed -r \"s/\\x1B\\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g\" | (grep -E --color=never \"^\\[warning|error\\] \" || true) > doc-warnings.txt"
     },
-    "author": "Shipgenius",
-    "license": "SEE LICENSE IN LICENSE",
+    "author": {
+        "name": "ShipGenius",
+        "email": "info@shipgeni.us",
+        "url": "https://lite.shipgeni.us"
+    },
+    "license": "MIT",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/ShipGenius/shipgenius-oms-node-sdk.git"
@@ -47,5 +62,8 @@
         "typedoc-plugin-rename-defaults": "^0.7.2",
         "typescript": "^5.7.2",
         "typescript-eslint": "^8.19.1"
+    },
+    "engines": {
+        "node": ">=18.20.0"
     }
 }
