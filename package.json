@@ -23,7 +23,8 @@
         "coverage": "jest --coverage src/; open ./coverage/lcov-report/index.html",
         "cicd-coverage-report": "jest --coverage --coverageReporters json-summary src/",
         "build-docs": "typedoc",
-        "watch-docs": "typedoc --watch"
+        "watch-docs": "typedoc --watch",
+        "check-docs": "typedoc --emit none 2>&1 | sed -r \"s/\\x1B\\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g\" | (grep -E --color=never \"^\\[warning|error\\] \" || true) > doc-warnings.txt"
     },
     "author": "Shipgenius",
     "license": "SEE LICENSE IN LICENSE",
