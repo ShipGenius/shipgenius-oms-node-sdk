@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ 10.3.0, 14, 16, 18.20.x ]
+        node: [ 18.20.x, 20, 22 ]
     
     name: Node ${{ matrix.node }}
     steps:
@@ -43,7 +43,8 @@ jobs:
         if: always()
         uses: MishaKav/jest-coverage-comment@main
         with:
-          title: Unit Test Report
+          title: Unit Test Report (Node ${{ matrix.node }})
+          unique-id-for-comment: ${{ matrix.node }}
           junitxml-path: ./junit.xml
           summary-title: Coverage Summary
           junitxml-title: Test Summary
