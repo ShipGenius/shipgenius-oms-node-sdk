@@ -62,6 +62,9 @@ import {
     DomesticLabelResponse,
     DomesticLabelError,
     UspsDestinationEntryFacilityType,
+    RateAndShipPriority,
+    ShippingTimeGuaranteeLevel,
+    DayCountMethod,
 } from "./index";
 
 describe("@shipgenius/oms/models", () => {
@@ -130,6 +133,9 @@ describe("@shipgenius/oms/models", () => {
         expect(RelationToShipment).toBeDefined();
         expect(TrackingNotificationLevel).toBeDefined();
         expect(UspsDestinationEntryFacilityType).toBeDefined();
+        expect(RateAndShipPriority).toBeDefined();
+        expect(ShippingTimeGuaranteeLevel).toBeDefined();
+        expect(DayCountMethod).toBeDefined();
 
         // Scalars
         expect(DateInformation).toBeDefined();

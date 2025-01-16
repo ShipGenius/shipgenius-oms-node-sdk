@@ -151,6 +151,16 @@ export type {
     UspsDestinationEntryFacility,
 } from "./carrier-specific-order-info.js";
 export type { default as CarrierDependentOrderInfo } from "./carrier-dependent-order-info.js";
+export type { default as DomesticRateAndShipInput } from "./domestic-rate-and-ship-input.js";
+export type {
+    default as DomesticRateAndShipServiceSpecs,
+    DomesticRateAndShipService,
+    RateAndShipFilters,
+    ShippingTimeFilter,
+    ShippingTimeFilterOption,
+    DeliverInDays,
+    DeliverByDate,
+} from "./domestic-rate-and-ship-service-specs.js";
 
 // GraphQL enums
 export { default as CarrierErrorCode } from "./carrier-error-code.js";
@@ -180,6 +190,7 @@ export { default as VoidLabelResponse } from "./void-label-response.js";
 export { TrackingNotificationLevel, ShipmentRelation as RelationToShipment } from "./tracking-subscription.js";
 export { default as Locale } from "./locale.js";
 export { UspsDestinationEntryFacilityType } from "./carrier-specific-order-info.js";
+export { RateAndShipPriority, ShippingTimeGuaranteeLevel, DayCountMethod } from "./domestic-rate-and-ship-service-specs.js";
 
 // Scalar info
 export { DateInformation } from "./date.js";

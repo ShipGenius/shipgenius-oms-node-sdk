@@ -21,6 +21,8 @@ import DomesticLabel, { DomesticLabelInterface } from "../models/domestic-label.
 import BulkDomesticLabelResponse, { BulkDomesticLabelResponseInterface } from "../models/bulk-domestic-label-response.js";
 import LabelCreationInput from "../models/label-creation-input.js";
 import LabelBatchServiceInput from "../models/label-batch-service-input.js";
+import DomesticRateAndShipInput from "../models/domestic-rate-and-ship-input.js";
+import DomesticRateAndShipServiceSpecs from "../models/domestic-rate-and-ship-service-specs.js";
 
 /**
  * A client for connecting to the ShipGenius OMS API
@@ -473,6 +475,80 @@ export default class ShipGeniusOmsClient {
         )) as { create_label: BulkDomesticLabelResponseInterface<Format> };
 
         return new BulkDomesticLabelResponse(create_label);
+    }
+
+    /**
+     * Rate and ship packages in a single API call.
+     *
+     * Specify the services to consider for shipping and rules for how to select a service.
+     * The best service according to those rules will be selected for each shipment.
+     *
+     * @param request The shipment or shipments to purchase shipping labels for
+     * @param service_spec The services to rate and rules for selecting the best
+     * @param options Additional options for controlling the purchase and response
+     *
+     * @returns Information about the batch of purchased labels
+     */
+    public async rateAndShip<Format extends LabelFormat = LabelFormat.NONE>(
+        request: GraphqlList<DomesticRateAndShipInput>,
+        service_spec: DomesticRateAndShipServiceSpecs,
+        options?: {
+            /**
+             * The id of the payment method to use for this batch.
+             *
+             * Set to `null` to use your default payment method.
+             *
+             * @default null
+             */
+            payment_id?: string | null;
+            /**
+             * The format to return label images in.
+             *
+             * Only one format can be specified, as converting image formats
+             * is a larger-than-typical workload.
+             *
+             * If you need the image in
+             * multiple formats, you can run a custom query via {@link runGraphql}.
+             *
+             * @default
+             * {@link LabelFormat.NONE}
+             */
+            format?: Format;
+            /**
+             * The unit of measure to return weights in
+             *
+             * @default
+             * {@link WeightUnit.LBS | LBS}
+             */
+            weight_unit?: WeightUnit;
+            /**
+             * Whether to return the image as a base64 `data:` uri (`true`),
+             * or a base64 encoded bytes string (`false`)
+             *
+             * @default false
+             */
+            as_data_url?: boolean;
+        },
+    ) {
+        const { domestic_rate_and_ship } = (await this.makeGqlRequest(
+            {
+                document:
+                    options?.format === LabelFormat.PNG
+                        ? "DomesticRateAndShipPng"
+                        : options?.format === LabelFormat.ZPL
+                          ? "DomesticRateAndShipZpl"
+                          : "DomesticRateAndShip",
+            },
+            {
+                request,
+                service_spec,
+                payment_id: options?.payment_id,
+                weight_unit: options?.weight_unit,
+                as_data_url: options?.as_data_url,
+            },
+        )) as { domestic_rate_and_ship: BulkDomesticLabelResponseInterface<Format> };
+
+        return new BulkDomesticLabelResponse(domestic_rate_and_ship);
     }
 
     /**
