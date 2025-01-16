@@ -1,5 +1,6 @@
 import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
+import requireExtensions from "./eslint-plugins/require-extensions/index.js";
 
 
 /** @type {import('eslint').Linter.Config[]} */
@@ -26,6 +27,7 @@ export default [
     // Plugins
     pluginJs.configs.recommended,
     ...tseslint.configs.recommendedTypeChecked,
+    ...requireExtensions.configs.recommended,
 
     // Rules
     {

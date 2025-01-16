@@ -1,5 +1,5 @@
-import LabelData, { LabelDataInterface } from "./label-data";
-import LabelFormat from "./label-format";
+import LabelData, { LabelDataInterface } from "./label-data.js";
+import LabelFormat from "./label-format.js";
 
 /**
  * Interface version of {@link LabelImage}

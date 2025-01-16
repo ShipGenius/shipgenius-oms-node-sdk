@@ -1,10 +1,10 @@
-import { JsonObject } from "../typescript-utils";
-import { CarrierName } from "./carrier";
-import CarrierWarning, { CarrierWarningInterface } from "./carrier-warning";
-import { DateInformation } from "./date";
-import ItemizedCharge, { ItemizedChargeInterface } from "./itemized-charge";
-import LabelFormat from "./label-format";
-import LabelImage, { LabelImageInterface } from "./label-image";
+import { JsonObject } from "../typescript-utils.js";
+import { CarrierName } from "./carrier.js";
+import CarrierWarning, { CarrierWarningInterface } from "./carrier-warning.js";
+import { DateInformation } from "./date.js";
+import ItemizedCharge, { ItemizedChargeInterface } from "./itemized-charge.js";
+import LabelFormat from "./label-format.js";
+import LabelImage, { LabelImageInterface } from "./label-image.js";
 
 /**
  * Interface version of {@link DomesticLabel}

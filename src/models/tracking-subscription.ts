@@ -1,5 +1,5 @@
-import { JsonObject } from "../typescript-utils";
-import Locale from "./locale";
+import { JsonObject } from "../typescript-utils.js";
+import Locale from "./locale.js";
 
 /**
  * Where to send tracking information to.

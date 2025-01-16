@@ -4,7 +4,7 @@
 const DATETIME_MATCHER =
     /^(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})([T|\s](?<hour>\d{2})(:(?<minute>\d{2})(:(?<second>\d{2})(\.(?<fraction>\d+))?)?)?)?(?<timezone>Z|[+-]\d{2}(:\d{2})?)?$/i;
 
-import { DateFields } from "./date";
+import { DateFields } from "./date.js";
 
 /** The fields of a datetime */
 export interface DatetimeFields extends DateFields {
