@@ -5,6 +5,7 @@ import { DateInformation } from "./date.js";
 import ItemizedCharge, { ItemizedChargeInterface } from "./itemized-charge.js";
 import LabelFormat from "./label-format.js";
 import LabelImage, { LabelImageInterface } from "./label-image.js";
+import DomesticLabelResponse, { DomesticLabelResponseInterface } from "./domestic-label-response.js";
 
 /**
  * Interface version of {@link DomesticLabel}
@@ -13,14 +14,8 @@ import LabelImage, { LabelImageInterface } from "./label-image.js";
  *
  * @internal
  */
-export interface DomesticLabelInterface<Format extends LabelFormat = LabelFormat.NONE> {
-    /**
-     * The UUID of the label-creation transaction.
-     *
-     * Can be used with {@link "@shipgenius/oms".ShipGeniusOmsClient.recoverLabel | recoverLabel}
-     * to recover the label if the label data is lost.
-     */
-    readonly transaction_id: string;
+export interface DomesticLabelInterface<Format extends LabelFormat = LabelFormat.NONE> extends DomesticLabelResponseInterface {
+    __typename: "DomesticLabel";
     /**
      * The id of the label in the Shipgenius OMS database.
      *
@@ -119,8 +114,11 @@ export interface DomesticLabelInterface<Format extends LabelFormat = LabelFormat
  *
  * @template Format The format to return the image in
  */
-export default class DomesticLabel<Format extends LabelFormat = LabelFormat.NONE> implements DomesticLabelInterface<Format> {
-    public readonly transaction_id: string;
+export default class DomesticLabel<Format extends LabelFormat = LabelFormat.NONE>
+    extends DomesticLabelResponse
+    implements DomesticLabelInterface<Format>
+{
+    public readonly __typename = "DomesticLabel" as const;
     public readonly id: string;
     public readonly carrier: CarrierName;
     public readonly service_code: string;
@@ -142,7 +140,7 @@ export default class DomesticLabel<Format extends LabelFormat = LabelFormat.NONE
 
     /** @hidden */
     constructor(data: DomesticLabelInterface<Format>) {
-        this.transaction_id = data.transaction_id;
+        super(data);
         this.id = data.id;
         this.carrier = data.carrier;
         this.service_code = data.service_code;

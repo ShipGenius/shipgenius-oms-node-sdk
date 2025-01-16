@@ -1,5 +1,6 @@
 import AddressValidationError from "../models/address-validation-error";
 import AddressValidationInfo from "../models/address-validation-info";
+import BulkDomesticLabelResponse from "../models/bulk-domestic-label-response";
 import BulkDomesticRateResponse from "../models/bulk-domestic-rate-response";
 import Carrier, { CarrierName } from "../models/carrier";
 import CarrierService from "../models/carrier-service";
@@ -1359,6 +1360,7 @@ describe("ShipGeniusOmsClient.recoverLabel", () => {
                 json: async (): Promise<{ data: { recover_label: DomesticLabelInterface<LabelFormat.NONE> } }> => ({
                     data: {
                         recover_label: {
+                            __typename: "DomesticLabel",
                             transaction_id: "28396004-65f3-4d6f-833a-d31e25e5cd41",
                             id: "123",
                             carrier: CarrierName.UPS,
@@ -1547,6 +1549,472 @@ describe("ShipGeniusOmsClient.recoverLabel", () => {
         });
         expect(response).toBeInstanceOf(DomesticLabel);
         expect(response.label.zpl.mime_type).toBe("application/zpl");
+
+        expect(fetch_expectations_passed).toBe(true);
+    });
+});
+
+describe("ShipGeniusOmsClient.createLabel", () => {
+    let original_fetch = globalThis.fetch;
+    afterEach(() => {
+        globalThis.fetch = original_fetch;
+    });
+
+    it("recovers creates labels (default params)", async () => {
+        let fetch_expectations_passed = false;
+
+        const data: BulkDomesticLabelResponse<LabelFormat.NONE> = {
+            batch_id: "12fcd37b-1c09-49a1-bc6b-eba9f4914f71",
+            batch_pdf_url: "https://test/12fcd37b-1c09-49a1-bc6b-eba9f4914f71.pdf",
+            labels: [
+                {
+                    __typename: "DomesticLabelError",
+                    transaction_id: "01f2985d-a0e5-43f6-9a7a-63f23a71d4d6",
+                    code: "TEST",
+                    message: "I don't want to write out a full label",
+                },
+            ],
+        };
+
+        global.fetch = jest.fn().mockImplementation(async (url: string, args: RequestInit) => {
+            expect(url).toBe("https://api.test/graphql");
+            expect({
+                ...args,
+                body: JSON.parse(args.body as string),
+            }).toEqual({
+                body: {
+                    documentId: "CreateLabel",
+                    variables: {
+                        request: {
+                            request_id: "1234",
+                            transaction_id: "01f2985d-a0e5-43f6-9a7a-63f23a71d4d6",
+                            package: {
+                                content_description: "Package",
+                                packaging: {
+                                    custom_box: {
+                                        length: {
+                                            measure: 8,
+                                            unit: LengthUnit.IN,
+                                        },
+                                        width: {
+                                            measure: 6,
+                                            unit: LengthUnit.IN,
+                                        },
+                                        height: {
+                                            measure: 4,
+                                            unit: LengthUnit.IN,
+                                        },
+                                    },
+                                },
+                                weight: {
+                                    measure: 5,
+                                    unit: WeightUnit.LBS,
+                                },
+                                ship_to: {
+                                    zip_code: "12345",
+                                    state: StateCode.NY,
+                                    street: ["123 Sesame St", "#102"],
+                                    city: "Somewhere",
+                                    residential: true,
+                                },
+                                ship_from: {
+                                    zip_code: "84037",
+                                    state: StateCode.UT,
+                                    street: "553 N Kays Dr",
+                                    city: "Kaysville",
+                                    residential: false,
+                                },
+                            },
+                        },
+                        service: {
+                            carrier: CarrierName.UPS,
+                            service_code: "GND",
+                        },
+                    },
+                },
+                headers: {
+                    Accept: "application/graphql-response+json",
+                    Authorization: "Bearer def456",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+            });
+
+            fetch_expectations_passed = true;
+
+            return {
+                ok: true,
+                json: async () => ({
+                    data: {
+                        create_label: data,
+                    },
+                }),
+            };
+        });
+
+        const client = new ShipGeniusOmsClient("def456", { url: "https://api.test" });
+
+        const response = await client.createLabel(
+            {
+                request_id: "1234",
+                transaction_id: "01f2985d-a0e5-43f6-9a7a-63f23a71d4d6",
+                package: {
+                    content_description: "Package",
+                    packaging: {
+                        custom_box: {
+                            length: {
+                                measure: 8,
+                                unit: LengthUnit.IN,
+                            },
+                            width: {
+                                measure: 6,
+                                unit: LengthUnit.IN,
+                            },
+                            height: {
+                                measure: 4,
+                                unit: LengthUnit.IN,
+                            },
+                        },
+                    },
+                    weight: {
+                        measure: 5,
+                        unit: WeightUnit.LBS,
+                    },
+                    ship_to: {
+                        zip_code: "12345",
+                        state: StateCode.NY,
+                        street: ["123 Sesame St", "#102"],
+                        city: "Somewhere",
+                        residential: true,
+                    },
+                    ship_from: {
+                        zip_code: "84037",
+                        state: StateCode.UT,
+                        street: "553 N Kays Dr",
+                        city: "Kaysville",
+                        residential: false,
+                    },
+                },
+            },
+            {
+                carrier: CarrierName.UPS,
+                service_code: "GND",
+            },
+        );
+        expect(response).toBeInstanceOf(BulkDomesticLabelResponse);
+        expect(response).toEqual(data);
+
+        expect(fetch_expectations_passed).toBe(true);
+    });
+
+    it("recovers creates labels (png)", async () => {
+        let fetch_expectations_passed = false;
+
+        const data: BulkDomesticLabelResponse<LabelFormat.NONE> = {
+            batch_id: "12fcd37b-1c09-49a1-bc6b-eba9f4914f71",
+            batch_pdf_url: "https://test/12fcd37b-1c09-49a1-bc6b-eba9f4914f71.pdf",
+            labels: [
+                {
+                    __typename: "DomesticLabelError",
+                    transaction_id: "01f2985d-a0e5-43f6-9a7a-63f23a71d4d6",
+                    code: "TEST",
+                    message: "I don't want to write out a full label",
+                },
+            ],
+        };
+
+        global.fetch = jest.fn().mockImplementation(async (url: string, args: RequestInit) => {
+            expect(url).toBe("https://api.test/graphql");
+            expect({
+                ...args,
+                body: JSON.parse(args.body as string),
+            }).toEqual({
+                body: {
+                    documentId: "CreateLabelPng",
+                    variables: {
+                        as_data_url: true,
+                        payment_id: "a80b6606-3c91-4122-b828-9ec5c59a2361",
+                        weight_unit: "KG",
+                        request: {
+                            request_id: "1234",
+                            transaction_id: "01f2985d-a0e5-43f6-9a7a-63f23a71d4d6",
+                            package: {
+                                content_description: "Package",
+                                packaging: {
+                                    custom_box: {
+                                        length: {
+                                            measure: 8,
+                                            unit: LengthUnit.IN,
+                                        },
+                                        width: {
+                                            measure: 6,
+                                            unit: LengthUnit.IN,
+                                        },
+                                        height: {
+                                            measure: 4,
+                                            unit: LengthUnit.IN,
+                                        },
+                                    },
+                                },
+                                weight: {
+                                    measure: 5,
+                                    unit: WeightUnit.LBS,
+                                },
+                                ship_to: {
+                                    zip_code: "12345",
+                                    state: StateCode.NY,
+                                    street: ["123 Sesame St", "#102"],
+                                    city: "Somewhere",
+                                    residential: true,
+                                },
+                                ship_from: {
+                                    zip_code: "84037",
+                                    state: StateCode.UT,
+                                    street: "553 N Kays Dr",
+                                    city: "Kaysville",
+                                    residential: false,
+                                },
+                            },
+                        },
+                        service: {
+                            carrier: CarrierName.UPS,
+                            service_code: "GND",
+                        },
+                    },
+                },
+                headers: {
+                    Accept: "application/graphql-response+json",
+                    Authorization: "Bearer def456",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+            });
+
+            fetch_expectations_passed = true;
+
+            return {
+                ok: true,
+                json: async () => ({
+                    data: {
+                        create_label: data,
+                    },
+                }),
+            };
+        });
+
+        const client = new ShipGeniusOmsClient("def456", { url: "https://api.test" });
+
+        const response = await client.createLabel(
+            {
+                request_id: "1234",
+                transaction_id: "01f2985d-a0e5-43f6-9a7a-63f23a71d4d6",
+                package: {
+                    content_description: "Package",
+                    packaging: {
+                        custom_box: {
+                            length: {
+                                measure: 8,
+                                unit: LengthUnit.IN,
+                            },
+                            width: {
+                                measure: 6,
+                                unit: LengthUnit.IN,
+                            },
+                            height: {
+                                measure: 4,
+                                unit: LengthUnit.IN,
+                            },
+                        },
+                    },
+                    weight: {
+                        measure: 5,
+                        unit: WeightUnit.LBS,
+                    },
+                    ship_to: {
+                        zip_code: "12345",
+                        state: StateCode.NY,
+                        street: ["123 Sesame St", "#102"],
+                        city: "Somewhere",
+                        residential: true,
+                    },
+                    ship_from: {
+                        zip_code: "84037",
+                        state: StateCode.UT,
+                        street: "553 N Kays Dr",
+                        city: "Kaysville",
+                        residential: false,
+                    },
+                },
+            },
+            {
+                carrier: CarrierName.UPS,
+                service_code: "GND",
+            },
+            {
+                as_data_url: true,
+                format: LabelFormat.PNG,
+                payment_id: "a80b6606-3c91-4122-b828-9ec5c59a2361",
+                weight_unit: WeightUnit.KG,
+            },
+        );
+        expect(response).toBeInstanceOf(BulkDomesticLabelResponse);
+        expect(response).toEqual(data);
+
+        expect(fetch_expectations_passed).toBe(true);
+    });
+
+    it("recovers creates labels (zpl)", async () => {
+        let fetch_expectations_passed = false;
+
+        const data: BulkDomesticLabelResponse<LabelFormat.NONE> = {
+            batch_id: "12fcd37b-1c09-49a1-bc6b-eba9f4914f71",
+            batch_pdf_url: "https://test/12fcd37b-1c09-49a1-bc6b-eba9f4914f71.pdf",
+            labels: [
+                {
+                    __typename: "DomesticLabelError",
+                    transaction_id: "01f2985d-a0e5-43f6-9a7a-63f23a71d4d6",
+                    code: "TEST",
+                    message: "I don't want to write out a full label",
+                },
+            ],
+        };
+
+        global.fetch = jest.fn().mockImplementation(async (url: string, args: RequestInit) => {
+            expect(url).toBe("https://api.test/graphql");
+            expect({
+                ...args,
+                body: JSON.parse(args.body as string),
+            }).toEqual({
+                body: {
+                    documentId: "CreateLabelZpl",
+                    variables: {
+                        as_data_url: true,
+                        payment_id: "a80b6606-3c91-4122-b828-9ec5c59a2361",
+                        weight_unit: "KG",
+                        request: {
+                            request_id: "1234",
+                            transaction_id: "01f2985d-a0e5-43f6-9a7a-63f23a71d4d6",
+                            package: {
+                                content_description: "Package",
+                                packaging: {
+                                    custom_box: {
+                                        length: {
+                                            measure: 8,
+                                            unit: LengthUnit.IN,
+                                        },
+                                        width: {
+                                            measure: 6,
+                                            unit: LengthUnit.IN,
+                                        },
+                                        height: {
+                                            measure: 4,
+                                            unit: LengthUnit.IN,
+                                        },
+                                    },
+                                },
+                                weight: {
+                                    measure: 5,
+                                    unit: WeightUnit.LBS,
+                                },
+                                ship_to: {
+                                    zip_code: "12345",
+                                    state: StateCode.NY,
+                                    street: ["123 Sesame St", "#102"],
+                                    city: "Somewhere",
+                                    residential: true,
+                                },
+                                ship_from: {
+                                    zip_code: "84037",
+                                    state: StateCode.UT,
+                                    street: "553 N Kays Dr",
+                                    city: "Kaysville",
+                                    residential: false,
+                                },
+                            },
+                        },
+                        service: {
+                            carrier: CarrierName.UPS,
+                            service_code: "GND",
+                        },
+                    },
+                },
+                headers: {
+                    Accept: "application/graphql-response+json",
+                    Authorization: "Bearer def456",
+                    "Content-Type": "application/json",
+                },
+                method: "POST",
+            });
+
+            fetch_expectations_passed = true;
+
+            return {
+                ok: true,
+                json: async () => ({
+                    data: {
+                        create_label: data,
+                    },
+                }),
+            };
+        });
+
+        const client = new ShipGeniusOmsClient("def456", { url: "https://api.test" });
+
+        const response = await client.createLabel(
+            {
+                request_id: "1234",
+                transaction_id: "01f2985d-a0e5-43f6-9a7a-63f23a71d4d6",
+                package: {
+                    content_description: "Package",
+                    packaging: {
+                        custom_box: {
+                            length: {
+                                measure: 8,
+                                unit: LengthUnit.IN,
+                            },
+                            width: {
+                                measure: 6,
+                                unit: LengthUnit.IN,
+                            },
+                            height: {
+                                measure: 4,
+                                unit: LengthUnit.IN,
+                            },
+                        },
+                    },
+                    weight: {
+                        measure: 5,
+                        unit: WeightUnit.LBS,
+                    },
+                    ship_to: {
+                        zip_code: "12345",
+                        state: StateCode.NY,
+                        street: ["123 Sesame St", "#102"],
+                        city: "Somewhere",
+                        residential: true,
+                    },
+                    ship_from: {
+                        zip_code: "84037",
+                        state: StateCode.UT,
+                        street: "553 N Kays Dr",
+                        city: "Kaysville",
+                        residential: false,
+                    },
+                },
+            },
+            {
+                carrier: CarrierName.UPS,
+                service_code: "GND",
+            },
+            {
+                as_data_url: true,
+                format: LabelFormat.ZPL,
+                payment_id: "a80b6606-3c91-4122-b828-9ec5c59a2361",
+                weight_unit: WeightUnit.KG,
+            },
+        );
+        expect(response).toBeInstanceOf(BulkDomesticLabelResponse);
+        expect(response).toEqual(data);
 
         expect(fetch_expectations_passed).toBe(true);
     });

@@ -39,6 +39,9 @@ export { default as TrackingStatus } from "./tracking-status.js";
 export { default as DomesticLabel } from "./domestic-label.js";
 export { default as LabelImage } from "./label-image.js";
 export { default as LabelData } from "./label-data.js";
+export { default as BulkDomesticLabelResponse } from "./bulk-domestic-label-response.js";
+export { default as DomesticLabelResponse } from "./domestic-label-response.js";
+export { default as DomesticLabelError } from "./domestic-label-error.js";
 
 // GraphQL type interfaces
 export type { AdditionalAddressInformationInterface } from "./additional-address-information.js";
@@ -71,6 +74,9 @@ export type { TrackingStatusInterface } from "./tracking-status.js";
 export type { DomesticLabelInterface } from "./domestic-label.js";
 export type { LabelImageInterface } from "./label-image.js";
 export type { LabelDataInterface } from "./label-data.js";
+export type { BulkDomesticLabelResponseInterface } from "./bulk-domestic-label-response.js";
+export type { DomesticLabelResponseInterface } from "./domestic-label-response.js";
+export type { DomesticLabelErrorInterface } from "./domestic-label-error.js";
 
 // GraphQL inputs
 export type { default as AdditionalDomesticInfoInput } from "./additional-domestic-info-input.js";
@@ -133,6 +139,18 @@ export type { default as Packaging, PackagingOption, BoxDimensions, BagDimension
 export type { default as ShipmentIdentifier, ShipmentIdentifierOption } from "./shipment-identifier.js";
 export type { default as WeightInput } from "./weight-input.js";
 export type { Trackingsubscription, TrackingRecipient, PartiallySupportedTrackingSubscriptionOptions } from "./tracking-subscription.js";
+export type { default as LabelCreationInput } from "./label-creation-input.js";
+export type { default as LabelBatchServiceInput } from "./label-batch-service-input.js";
+export type { default as DomesticPackageLabelInput } from "./domestic-package-label-input.js";
+export type { default as CarrierServiceLabelInput } from "./carrier-service-label-input.js";
+export type { default as OrderInfo } from "./order-info.js";
+export type { default as ReferenceNumber } from "./reference-number.js";
+export type {
+    default as CarrierSpecificOrderInfo,
+    UspsSpecificOrderInfo,
+    UspsDestinationEntryFacility,
+} from "./carrier-specific-order-info.js";
+export type { default as CarrierDependentOrderInfo } from "./carrier-dependent-order-info.js";
 
 // GraphQL enums
 export { default as CarrierErrorCode } from "./carrier-error-code.js";
@@ -161,6 +179,7 @@ export { default as TrackingStatusCode } from "./tracking-status-code.js";
 export { default as VoidLabelResponse } from "./void-label-response.js";
 export { TrackingNotificationLevel, ShipmentRelation as RelationToShipment } from "./tracking-subscription.js";
 export { default as Locale } from "./locale.js";
+export { UspsDestinationEntryFacilityType } from "./carrier-specific-order-info.js";
 
 // Scalar info
 export { DateInformation } from "./date.js";

@@ -1,6 +1,7 @@
 import { CarrierName } from "./carrier";
 import CarrierWarning from "./carrier-warning";
 import DomesticLabel, { DomesticLabelInterface } from "./domestic-label";
+import DomesticLabelResponse from "./domestic-label-response";
 import ItemizedCharge, { ChargeType } from "./itemized-charge";
 import LabelFormat from "./label-format";
 import LabelImage from "./label-image";
@@ -8,6 +9,7 @@ import LabelImage from "./label-image";
 describe("DomesticLabel", () => {
     it("constructs from the server response (no image)", () => {
         const data: DomesticLabelInterface<LabelFormat.NONE> = {
+            __typename: "DomesticLabel",
             transaction_id: "4061d9d2-341e-4a7a-91e6-b11b7d1b4347",
             id: "123",
             carrier: CarrierName.UPS,
@@ -50,6 +52,7 @@ describe("DomesticLabel", () => {
         const obj = new DomesticLabel<LabelFormat.NONE>(data);
 
         expect(obj).toBeInstanceOf(DomesticLabel);
+        expect(obj).toBeInstanceOf(DomesticLabelResponse);
         expect(obj.warnings[0]).toBeInstanceOf(CarrierWarning);
         expect(obj.itemized_charges[0]).toBeInstanceOf(ItemizedCharge);
         expect(obj).toEqual(data);
@@ -57,6 +60,7 @@ describe("DomesticLabel", () => {
 
     it("constructs from the server response (png)", () => {
         const data: DomesticLabelInterface<LabelFormat.PNG> = {
+            __typename: "DomesticLabel",
             transaction_id: "4061d9d2-341e-4a7a-91e6-b11b7d1b4347",
             id: "123",
             carrier: CarrierName.UPS,
@@ -120,6 +124,7 @@ describe("DomesticLabel", () => {
 
     it("constructs from the server response (zpl)", () => {
         const data: DomesticLabelInterface<LabelFormat.ZPL> = {
+            __typename: "DomesticLabel",
             transaction_id: "4061d9d2-341e-4a7a-91e6-b11b7d1b4347",
             id: "123",
             carrier: CarrierName.UPS,
@@ -183,6 +188,7 @@ describe("DomesticLabel", () => {
 
     it("parses delivery date", () => {
         const data: DomesticLabelInterface<LabelFormat.NONE> = {
+            __typename: "DomesticLabel",
             transaction_id: "4061d9d2-341e-4a7a-91e6-b11b7d1b4347",
             id: "123",
             carrier: CarrierName.UPS,
@@ -233,6 +239,7 @@ describe("DomesticLabel", () => {
 
     it("handles null delivery date", () => {
         const data: DomesticLabelInterface<LabelFormat.NONE> = {
+            __typename: "DomesticLabel",
             transaction_id: "4061d9d2-341e-4a7a-91e6-b11b7d1b4347",
             id: "123",
             carrier: CarrierName.UPS,

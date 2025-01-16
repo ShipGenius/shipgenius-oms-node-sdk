@@ -18,6 +18,9 @@ import { VoidLabelQueryResponse } from "../models/void-label-response.js";
 import { Trackingsubscription } from "../models/tracking-subscription.js";
 import LabelFormat from "../models/label-format.js";
 import DomesticLabel, { DomesticLabelInterface } from "../models/domestic-label.js";
+import BulkDomesticLabelResponse, { BulkDomesticLabelResponseInterface } from "../models/bulk-domestic-label-response.js";
+import LabelCreationInput from "../models/label-creation-input.js";
+import LabelBatchServiceInput from "../models/label-batch-service-input.js";
 
 /**
  * A client for connecting to the ShipGenius OMS API
@@ -399,10 +402,78 @@ export default class ShipGeniusOmsClient {
     }
 
     /**
-     * Purchase a label for a shipment
+     * Purchase a shipping label
      *
-     * @returns
+     * @param request The shipment or shipments to make
+     * @param service The carrier service to purchase.
+     * If set to `null`, each request must specify an override
+     * in {@link LabelCreationInput.override_service}.
+     * @param options Extra, optional, parameters for the label
+     * creation and returned information.
+     *
+     * @returns Information about the batch of purchased labels.
      */
+    public async createLabel<Format extends LabelFormat = LabelFormat.NONE>(
+        request: GraphqlList<LabelCreationInput>,
+        service: LabelBatchServiceInput | null,
+        options?: {
+            /**
+             * The id of the payment method to use for this batch.
+             *
+             * Set to `null` to use your default payment method.
+             *
+             * @default null
+             */
+            payment_id?: string | null;
+            /**
+             * The format to return label images in.
+             *
+             * Only one format can be specified, as converting image formats
+             * is a larger-than-typical workload.
+             *
+             * If you need the image in
+             * multiple formats, you can run a custom query via {@link runGraphql}.
+             *
+             * @default
+             * {@link LabelFormat.NONE}
+             */
+            format?: Format;
+            /**
+             * The unit of measure to return weights in
+             *
+             * @default
+             * {@link WeightUnit.LBS | LBS}
+             */
+            weight_unit?: WeightUnit;
+            /**
+             * Whether to return the image as a base64 `data:` uri (`true`),
+             * or a base64 encoded bytes string (`false`)
+             *
+             * @default false
+             */
+            as_data_url?: boolean;
+        },
+    ): Promise<BulkDomesticLabelResponse<Format>> {
+        const { create_label } = (await this.makeGqlRequest(
+            {
+                document:
+                    options?.format === LabelFormat.PNG
+                        ? "CreateLabelPng"
+                        : options?.format === LabelFormat.ZPL
+                          ? "CreateLabelZpl"
+                          : "CreateLabel",
+            },
+            {
+                request,
+                service,
+                payment_id: options?.payment_id,
+                weight_unit: options?.weight_unit,
+                as_data_url: options?.as_data_url,
+            },
+        )) as { create_label: BulkDomesticLabelResponseInterface<Format> };
+
+        return new BulkDomesticLabelResponse(create_label);
+    }
 
     /**
      * Recover a lost label using the transaction if provided when the label was initially created.

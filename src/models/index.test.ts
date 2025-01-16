@@ -58,6 +58,10 @@ import {
     DomesticLabel,
     LabelImage,
     LabelData,
+    BulkDomesticLabelResponse,
+    DomesticLabelResponse,
+    DomesticLabelError,
+    UspsDestinationEntryFacilityType,
 } from "./index";
 
 describe("@shipgenius/oms/models", () => {
@@ -93,6 +97,9 @@ describe("@shipgenius/oms/models", () => {
         expect(DomesticLabel).toBeDefined();
         expect(LabelImage).toBeDefined();
         expect(LabelData).toBeDefined();
+        expect(BulkDomesticLabelResponse).toBeDefined();
+        expect(DomesticLabelResponse).toBeDefined();
+        expect(DomesticLabelError).toBeDefined();
 
         // Enums
         expect(CarrierErrorCode).toBeDefined();
@@ -122,6 +129,7 @@ describe("@shipgenius/oms/models", () => {
         expect(Locale).toBeDefined();
         expect(RelationToShipment).toBeDefined();
         expect(TrackingNotificationLevel).toBeDefined();
+        expect(UspsDestinationEntryFacilityType).toBeDefined();
 
         // Scalars
         expect(DateInformation).toBeDefined();
