@@ -37,13 +37,13 @@ jobs:
         continue-on-error: true
         run: python3 .github/scripts/docs_report.py >> $GITHUB_OUTPUT
       
-      - name: Leave lint information in comment
-        if: ${{ steps.docs_info.outputs.message }}
-        continue-on-error: ${{ steps.docs.outcome == 'success' }}
-        uses: thollander/actions-comment-pull-request@v3
-        with:
-          comment-tag: 'docs_info'
-          message: ${{ steps.docs_info.outputs.message }}
+      # - name: Leave lint information in comment
+      #   if: ${{ steps.docs_info.outputs.message }}
+      #   continue-on-error: ${{ steps.docs.outcome == 'success' }}
+      #   uses: thollander/actions-comment-pull-request@v3
+      #   with:
+      #     comment-tag: 'docs_info'
+      #     message: ${{ steps.docs_info.outputs.message }}
 
       - name: Check failure
         if: ${{ steps.docs_info.outputs.message }}

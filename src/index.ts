@@ -2,8 +2,6 @@
  * SDK for interacting with the Shipgenius OMS API
  *
  * Default Export: {@link ShipGeniusOmsClient}
- * 
- * {@link testing}
  *
  * @module @shipgenius/oms
  */
