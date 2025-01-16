@@ -1,8 +1,8 @@
 {
     "name": "@shipgenius/oms",
-    "version": "0.1.2",
+    "version": "1.0.0",
     "type": "module",
-    "description": "NOT FINISHED, I'M JUST TESTING IT\n\nSDK for Shipgenius Order Mangement System",
+    "description": "SDK for the Shipgenius Order Mangement System",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "exports": {
