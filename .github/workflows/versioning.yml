@@ -1,0 +1,74 @@
+
+name: Check Versioning
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: write
+  checks: write
+  pull-requests: write
+
+jobs:
+  check-versioning:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.base_ref }}
+      
+      - name: Get main version
+        id: main-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+
+      - name: Checkout changes
+        uses: actions/checkout@v4
+
+      - name: Get new version
+        id: new-version
+        uses: martinbeentjes/npm-get-version-action@v1.3.1
+
+      - name: Set up node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.20.x
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm install
+
+      - name: Compare versions
+        id: version-compare
+        continue-on-error: true
+        env:
+          OLD_VERSION: ${{ steps.main-version.outputs.current-version }}
+          NEW_VERSION: ${{ steps.new-version.outputs.current-version }}
+        run: npx semver -r ">$OLD_VERSION" "$NEW_VERSION""
+
+      - name: Propose version
+        id: proposed-version
+        if: ${{ steps.version-compare.outcome != 'success' }}
+        env:
+          OLD_VERSION: ${{ steps.main-version.outputs.current-version }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: node .github/scripts/bump-version.js "$OLD_VERSION" "$PR_TITLE" >> $GITHUB_OUTPUT
+
+      - name: Change version number
+        if: ${{ steps.version-compare.outcome != 'success' }}
+        uses: reedyuk/npm-version@1.1.1
+        with:
+          version: ${{ steps.proposed-version.outputs.version }}
+
+      - name: Commit version change
+        if: ${{ steps.version-compare.outcome != 'success' }}
+        uses: stefanzweifel/git-auto-commit-action@v5
+
+      - name: Notify user that version number was set
+        if: ${{ steps.version-compare.outcome != 'success' }}
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: "Version number automatically changed to ${{ steps.proposed-version.outputs.version }}. If this is not correct, please change it to any version > ${{ steps.main-version.outputs.current-version }}"
