@@ -127,11 +127,47 @@ You can also use the navigation menu on this page to view guides and documentati
 
 ### Bug reports
 
-If you encounter any bugs while using the SDK, please report them in the [GitHub issues page](https://github.com/
+If you encounter any bugs while using the SDK, please report them in the [GitHub issues page](https://github.com/ShipGenius/shipgenius-oms-node-sdk/issues/new?template=bug_report.md).
+
+Please provide as many details as possible. However, if you aren't able to provide certain details, we would prefer being aware of the issue.
+
+> [!NOTE]
+> 
+> This repository is for the SDK - not ShipGenius OMS as a whole.
+> It only provides an interface for the backend.
+>
+> If you are running into issues that relate to the backend
+> rather than to the SDK, please report them to info@shipgeni.us instead.
 
 ### Pull requests
 
 This SDK is an open-source connector for the ShipGenius OMS System.
 You are free to look around and adapt the code for your needs if necessary.
 
-If you would like to
+If you would like to contribute your improvements, you can open a pull request and we will review your contribution.
+If accepted, your contribution will be merged into the project. Note that this means you will be licensing your contribution
+under the MIT license. You will also be added to the list of contributors.
+
+#### Setting up the environment
+
+After cloning the repository, run `npm install` to install all dev dependencies.
+
+#### Testing
+
+There are various scripts in the package to guide development:
+- `npm run test`: Run all unit tests
+- `npm run coverage`: Run all unit tests and open a coverage report
+- `npm run format`: Run code formatting
+- `npm run lint`: Run linting
+- `npm run build-docs`: Generate typedoc site (site will be at `docs/index.html`)
+- `npm run watch-docs`: Start a process to build the typedoc site every time code is changed
+- `npm pack`: Build the project and generate a tarball that can be installed for testing
+
+Note that for your contribution to be accepted you must:
+- Run formatting
+- Have no lint errors
+- Have all tests passing
+- [for features] Have all new code covered by tests
+- [for bug fixes] Have tests that require the bugfix to pass
+- Have no serious warnings generated when building the documentation
+- Have no errors when building the project
