@@ -31,4 +31,4 @@ Steps to reproduce the behavior:
  - Version [e.g. "1.0.0"]
 
 **Additional context**
-<-- Add any other context about the problem here. -->
+<!-- Add any other context about the problem here. -->
