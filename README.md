@@ -164,10 +164,10 @@ There are various scripts in the package to guide development:
 - `npm pack`: Build the project and generate a tarball that can be installed for testing
 
 Note that for your contribution to be accepted you must:
-- Run formatting
-- Have no lint errors
-- Have all tests passing
-- [for features] Have all new code covered by tests
+- Run formatting (`npm run format`)
+- Have no lint errors (`npm run lint`)
+- Have all tests passing (`npm run test`)
+- [for features] Have all new code covered by tests (`npm run coverage`)
 - [for bug fixes] Have tests that require the bugfix to pass
-- Have no serious warnings generated when building the documentation
-- Have no errors when building the project
+- Have no serious warnings generated when building the documentation (`npm run build-docs`)
+- Have no errors when building the project (`npm pack`)
