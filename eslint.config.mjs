@@ -22,6 +22,7 @@ export default [
                         "*.cjs",
                         "*.cts",
                         "eslint-plugins/*/index.js",
+                        ".github/scripts/*.js",
                     ]
                 },
                 tsconfigRootDir: import.meta.dirname,
