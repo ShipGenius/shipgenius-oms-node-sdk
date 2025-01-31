@@ -1,6 +1,6 @@
 {
     "name": "@shipgenius/oms",
-    "version": "1.0.1-beta.1",
+    "version": "1.0.1-beta.2",
     "type": "module",
     "description": "NOT READY! Shipgenius OMS is launching soon, but is currently not ready.\n\nSDK for the Shipgenius Order Mangement System",
     "keywords": [

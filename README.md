@@ -8,7 +8,7 @@ From here, you can rate packages across multiple carriers and purchase shipping 
 ### Getting your credentials
 
 To use the API, you must have a Shipgenius business account.
-[Create an account](https://lite.shipgeni.us/create-account?account-type=business) or [Sign in](https://lite.shipgeni.us/home) if you already have one.
+[Create an account](https://lite.shipgeni.us/create-account/business) or [Sign in](https://lite.shipgeni.us/home) if you already have one.
 Make sure the account you create is an Business Account rather than an Individual Account, as individual accounts are not currently supported on the API.
 
 Once signed in, go the the [Connected Apps](https://lite.shipgeni.us/connected-apps) page, and register a new app by clicking the "Create New App" button.
